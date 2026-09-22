@@ -1,5 +1,7 @@
+import "./Explore.css";
 import { useState } from "react";
 import CropExplore from "./CropExplore";
+import QuestionsExplore from "./QuestionsExplore";
 
 function Explore() {
   const [view, setView] = useState("main");
@@ -7,6 +9,14 @@ function Explore() {
   if (view === "crops") {
     return (
       <CropExplore
+        onBack={() => setView("main")}
+      />
+    );
+  }
+
+  if (view === "questions") {
+    return (
+      <QuestionsExplore
         onBack={() => setView("main")}
       />
     );
@@ -38,13 +48,20 @@ function Explore() {
           >
             <span>🌾</span>
             <strong>Crops</strong>
-            <small>Updates, questions and knowledge by crop</small>
+            <small>
+              Updates, questions and knowledge by crop
+            </small>
           </button>
 
-          <button type="button">
+          <button
+            type="button"
+            onClick={() => setView("questions")}
+          >
             <span>❓</span>
             <strong>Problems & Questions</strong>
-            <small>Find answers from the farming community</small>
+            <small>
+              Find answers from the farming community
+            </small>
           </button>
         </div>
       </section>
@@ -58,7 +75,9 @@ function Explore() {
 
             <div>
               <strong>Farms</strong>
-              <small>Discover farms and what they are growing</small>
+              <small>
+                Discover farms and what they are growing
+              </small>
             </div>
 
             <span className="explore-arrow">›</span>
@@ -69,7 +88,9 @@ function Explore() {
 
             <div>
               <strong>People</strong>
-              <small>Find farmers and people in agriculture</small>
+              <small>
+                Find farmers and people in agriculture
+              </small>
             </div>
 
             <span className="explore-arrow">›</span>
@@ -85,7 +106,9 @@ function Explore() {
 
           <div>
             <strong>Services</strong>
-            <small>Find agricultural services and providers</small>
+            <small>
+              Find agricultural services and providers
+            </small>
           </div>
 
           <span className="explore-arrow">›</span>

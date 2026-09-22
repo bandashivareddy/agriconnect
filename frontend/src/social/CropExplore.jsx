@@ -1,3 +1,5 @@
+import "./Explore.css";
+import "./CropExplore.css";
 import { useState } from "react";
 import CropHub from "./CropHub";
 

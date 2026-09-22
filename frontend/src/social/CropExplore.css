@@ -1,0 +1,47 @@
+.crop-explore {
+  padding: 20px 16px 110px;
+}
+
+.crop-list {
+  display: flex;
+  flex-direction: column;
+  margin-top: 22px;
+  overflow: hidden;
+  background: #ffffff;
+  border: 1px solid #dce4d9;
+  border-radius: 16px;
+}
+
+.crop-discovery-card {
+  display: grid;
+  grid-template-columns: 42px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  min-height: 68px;
+  padding: 10px 16px;
+  border: 0;
+  border-bottom: 1px solid #edf0eb;
+  background: #ffffff;
+  text-align: left;
+  cursor: pointer;
+}
+
+.crop-discovery-card:last-child {
+  border-bottom: 0;
+}
+
+.crop-discovery-icon {
+  font-size: 1.6rem;
+  text-align: center;
+}
+
+.crop-discovery-name {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #243126;
+}
+
+.crop-discovery-arrow {
+  font-size: 1.6rem;
+  color: #7d887d;
+}

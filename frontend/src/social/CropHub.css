@@ -1,0 +1,71 @@
+.crop-hub {
+  padding: 20px 0 110px;
+}
+
+.crop-hub > .explore-back {
+  margin-left: 16px;
+  margin-right: 16px;
+}
+
+.crop-hub-header {
+  padding: 4px 16px 18px;
+}
+
+.crop-hub-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.crop-hub-title span {
+  font-size: 2rem;
+}
+
+.crop-hub-title h1 {
+  margin: 0;
+  font-size: 1.8rem;
+  line-height: 1.2;
+  color: #183f25;
+}
+
+.crop-hub-header p {
+  margin: 8px 0 0;
+  color: #687267;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.crop-hub-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 0 16px 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.crop-hub-tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.crop-hub-tabs button {
+  flex: 0 0 auto;
+  padding: 8px 13px;
+  border: 1px solid #d8dfd5;
+  border-radius: 999px;
+  background: #ffffff;
+  color: #536053;
+  font: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.crop-hub-tabs button.active {
+  border-color: #2e6b3a;
+  background: #eaf3e9;
+  color: #24582f;
+  font-weight: 600;
+}
+
+.crop-hub-feed {
+  border-top: 1px solid #e3e7e0;
+}
