@@ -1,0 +1,144 @@
+.farm-profile {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 12px 0 32px;
+}
+
+.farm-profile > .explore-back {
+  margin-left: 16px;
+  margin-right: 16px;
+  margin-bottom: 10px;
+}
+
+.farm-profile-header {
+  padding: 0 16px 12px;
+}
+
+.farm-profile-avatar {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  margin-bottom: 8px;
+  border-radius: 50%;
+  background: #e3efe4;
+  font-size: 2rem;
+}
+
+.farm-profile-header h1 {
+  margin: 0;
+  color: #183f25;
+  font-size: 1.8rem;
+  line-height: 1.2;
+}
+
+.farm-profile-location,
+.farm-profile-bio {
+  margin: 4px 0 8px;
+  color: #687267;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.farm-profile-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.farm-profile-labels li {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #edf5ec;
+  color: #315f36;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.farm-profile-follow {
+  min-height: 44px;
+  padding: 10px 24px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #eebc20;
+  color: #20251f;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.farm-profile-follow[aria-pressed="true"] {
+  border-color: #2e6b3a;
+  background: #eaf3e9;
+  color: #24582f;
+}
+
+.farm-profile-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  background: #ffffff;
+  border-bottom: 1px solid #e6e9e2;
+}
+
+.farm-profile-tabs button {
+  padding: 14px 6px 12px;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  background: transparent;
+  color: #697068;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.farm-profile-tabs button[aria-pressed="true"] {
+  border-bottom-color: #2e6b3a;
+  color: #2e6b3a;
+}
+
+.farm-profile-updates {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.farm-profile-crops {
+  padding: 20px 16px;
+}
+
+.farm-profile-crops h2 {
+  margin: 0;
+  color: #23482c;
+  font-size: 1rem;
+}
+
+.farm-profile-crops p {
+  color: #687267;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.farm-profile-crops ul {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.farm-profile-crops li {
+  padding: 16px;
+  border: 1px solid #dce4d9;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #315f36;
+  font-weight: 600;
+}

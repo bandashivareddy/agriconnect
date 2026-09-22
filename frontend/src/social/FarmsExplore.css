@@ -1,0 +1,97 @@
+.farms-explore {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+}
+
+.farms-discovery-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.farms-discovery-card {
+  padding: 16px;
+  border: 1px solid #dce4d9;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.farms-discovery-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.farms-discovery-heading h2 {
+  margin: 0;
+  color: #23482c;
+  font-size: 1.05rem;
+}
+
+.farms-discovery-heading h2 button {
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: #2e6b3a;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.farms-follow-button {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #eebc20;
+  color: #20251f;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.farms-follow-button[aria-pressed="true"] {
+  border-color: #2e6b3a;
+  background: #eaf3e9;
+  color: #24582f;
+}
+
+.farms-location {
+  margin: 6px 0 12px;
+  color: #687267;
+  font-size: 0.85rem;
+}
+
+.farms-crop-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.farms-crop-labels li {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #edf5ec;
+  color: #315f36;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.farms-bio,
+.farms-empty {
+  margin: 12px 0 0;
+  color: #687267;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}

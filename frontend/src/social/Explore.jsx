@@ -2,9 +2,14 @@ import "./Explore.css";
 import { useState } from "react";
 import CropExplore from "./CropExplore";
 import QuestionsExplore from "./QuestionsExplore";
+import FarmsExplore from "./FarmsExplore";
 
 function Explore() {
   const [view, setView] = useState("main");
+
+  if (view === "farms") {
+    return <FarmsExplore onBack={() => setView("main")} />;
+  }
 
   if (view === "crops") {
     return (
@@ -70,7 +75,7 @@ function Explore() {
         <h2>Discover</h2>
 
         <div className="explore-discovery-list">
-          <button type="button">
+          <button type="button" onClick={() => setView("farms")}>
             <span>🌱</span>
 
             <div>

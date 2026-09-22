@@ -1,6 +1,38 @@
 import mangoFlowering from "../assets/social/mango-flowering.jpeg";
 import bhendiLeaf from "../assets/social/bhendi-leaf.jpeg";
 
+export const farms = [
+  {
+    id: "bjr-farms",
+    name: "BJR Farms",
+    location: "Nalgonda, Telangana",
+    crops: ["Mango", "Coconut", "Oil Palm"],
+    bio: "Sharing seasonal moments, orchard stories and everyday discoveries from our farm.",
+    postIds: [1],
+  },
+  {
+    id: "manjeera-farms",
+    name: "Manjeera Farms",
+    location: "Sangareddy, Telangana",
+    crops: ["Paddy", "Groundnut"],
+    bio: "Following the seasons and sharing little moments from the fields.",
+  },
+  {
+    id: "palapitta-farm",
+    name: "Palapitta Farm",
+    location: "Warangal, Telangana",
+    crops: ["Chilli", "Cotton"],
+    bio: "Field photos, fresh growth and conversations with fellow growers.",
+  },
+  {
+    id: "godavari-groves",
+    name: "Godavari Groves",
+    location: "Rajahmundry, Andhra Pradesh",
+    crops: ["Coconut", "Banana"],
+    bio: "A glimpse of life among the palms and banana plants.",
+  },
+];
+
 export const posts = [
   {
     id: 1,
