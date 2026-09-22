@@ -1,0 +1,61 @@
+.setup-page {
+  background: #f7f8f3;
+  min-height: 100vh;
+  padding: 32px max(6vw, 24px);
+}
+
+.setup-card {
+  background: white;
+  border: 1px solid #dce6d9;
+  border-radius: 14px;
+  margin: 45px auto;
+  max-width: 620px;
+  padding: 38px;
+}
+
+.setup-card h1 {
+  font-size: 2.3rem;
+  margin: 0 0 10px;
+}
+
+.setup-intro {
+  color: #607064;
+  margin-bottom: 28px;
+}
+
+.setup-form {
+  display: grid;
+  gap: 17px;
+}
+
+.setup-form h2 {
+  border-top: 1px solid #e0e8de;
+  font-size: 1.2rem;
+  margin: 12px 0 0;
+  padding-top: 25px;
+}
+
+.setup-form label {
+  color: #29432e;
+  display: grid;
+  font-size: 0.9rem;
+  font-weight: 700;
+  gap: 8px;
+}
+
+.setup-form input {
+  border: 1px solid #bfd0bd;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 400;
+  padding: 12px;
+}
+
+.setup-message {
+  background: #eaf3df;
+  border-radius: 8px;
+  color: #245b32;
+  font-weight: 700;
+  margin-top: 20px;
+  padding: 12px;
+}

@@ -1,0 +1,24 @@
+.provider-profile-page { min-height: 100vh; background: #f6f8f5; color: #203326; }
+.provider-profile-content { width: min(680px, calc(100% - 32px)); margin: 0 auto; padding: 16px 0 44px; }
+.provider-profile-topbar { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; gap: 8px; }
+.provider-profile-topbar h1 { margin: 0; color: #183d22; font-size: 1.4rem; line-height: 1.2; }
+.provider-profile-back { width: 40px; height: 40px; padding: 0; border: 0; border-radius: 10px; background: transparent; color: #2f6b3b; cursor: pointer; font: inherit; font-size: 1.35rem; font-weight: 800; }
+.provider-profile-back:hover { background: #edf4eb; }
+.provider-profile-intro { margin: 8px 0 18px 48px; color: #657267; font-size: .88rem; line-height: 1.45; }
+.provider-profile-card, .provider-profile-form-card { box-sizing: border-box; border: 1px solid #dfe7dc; border-radius: 16px; background: #fff; box-shadow: 0 2px 9px rgba(28,55,34,.04); padding: 18px; }
+.provider-profile-card h2, .provider-profile-form-card h2 { margin: 0 0 8px; color: #21482a; font-size: 1.1rem; }
+.provider-profile-description, .provider-profile-empty p { margin: 0; color: #657267; font-size: .87rem; line-height: 1.5; }
+.provider-profile-card dl { display: grid; gap: 10px; margin: 18px 0; }
+.provider-profile-card dl div { border-top: 1px solid #e5ebe2; padding-top: 10px; }
+.provider-profile-card dt { color: #68756b; font-size: .76rem; }
+.provider-profile-card dd { margin: 3px 0 0; color: #29432e; font-size: .88rem; font-weight: 700; overflow-wrap: anywhere; }
+.provider-profile-edit { margin-left: auto; }
+.provider-profile-setup, .provider-profile-form-card .primary-button { width: 100%; min-height: 46px; margin-top: 18px; }
+.provider-profile-form-card { margin-top: 14px; }
+.provider-profile-form-card form { display: grid; gap: 13px; }
+.provider-profile-form-card label { display: grid; gap: 6px; color: #29432e; font-size: .8rem; font-weight: 750; }
+.provider-profile-form-card input, .provider-profile-form-card textarea { width: 100%; box-sizing: border-box; border: 1px solid #cbd7c8; border-radius: 8px; color: #26382b; font: inherit; padding: 10px 11px; }
+.provider-profile-form-card input { min-height: 44px; }
+.provider-profile-form-card textarea { resize: vertical; }
+.provider-profile-message, .provider-profile-loading { margin: 14px 0 0; padding: 10px 11px; border: 1px solid #d3e5cc; border-radius: 8px; background: #edf6e8; color: #285d34; font-size: .82rem; font-weight: 700; }
+@media (max-width: 480px) { .provider-profile-content { width: calc(100% - 24px); } }

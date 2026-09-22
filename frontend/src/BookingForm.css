@@ -1,0 +1,623 @@
+/* =========================================================
+   AgriConnect — Booking Form
+   ========================================================= */
+
+.booking-panel {
+  width: min(1100px, calc(100% - 48px));
+
+  margin: 2rem auto 5rem;
+
+  padding: 2.25rem;
+
+  background: #ffffff;
+
+  border: 1px solid #dce9df;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 12px 35px rgba(15, 23, 42, 0.08);
+
+  scroll-margin-top: 100px;
+}
+
+
+/* =========================================================
+   Booking Header
+   ========================================================= */
+
+.booking-panel .booking-heading {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 2rem;
+
+  margin-bottom: 2rem;
+
+  padding-bottom: 1.5rem;
+
+  border-bottom: 1px solid #e7eee9;
+}
+
+.booking-panel .booking-heading .eyebrow {
+  margin-bottom: 0.45rem;
+}
+
+.booking-panel .booking-heading h2 {
+  margin: 0 0 0.65rem;
+
+  color: #17251b;
+
+  font-size: clamp(1.65rem, 3vw, 2.15rem);
+
+  line-height: 1.2;
+
+  letter-spacing: -0.03em;
+}
+
+.booking-panel .booking-heading p {
+  margin: 0.35rem 0;
+
+  color: #657168;
+
+  font-size: 0.95rem;
+}
+
+.booking-panel .booking-heading p strong {
+  color: #245b32;
+
+  font-size: 1.05rem;
+}
+
+
+/* =========================================================
+   Close Button
+   ========================================================= */
+
+.booking-panel .close-button {
+  flex-shrink: 0;
+
+  min-height: 40px;
+
+  padding: 0.65rem 1rem;
+
+  border: 1px solid #cbd8cf;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #374151;
+
+  cursor: pointer;
+
+  font: inherit;
+
+  font-weight: 600;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.booking-panel .close-button:hover {
+  background: #f5f8f5;
+
+  border-color: #aebfb2;
+
+  color: #245b32;
+}
+
+
+/* =========================================================
+   Booking Form Layout
+   ========================================================= */
+
+.booking-panel .booking-form {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 1.35rem;
+}
+
+.booking-panel .booking-form label {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 0.5rem;
+
+  color: #26382b;
+
+  font-size: 0.88rem;
+
+  font-weight: 700;
+}
+
+.booking-panel .booking-form input,
+.booking-panel .booking-form select,
+.booking-panel .booking-form textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 0.82rem 0.95rem;
+
+  border: 1px solid #cbd7ce;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #1f2937;
+
+  font: inherit;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.booking-panel .booking-form input:hover,
+.booking-panel .booking-form select:hover,
+.booking-panel .booking-form textarea:hover {
+  border-color: #aebfb2;
+}
+
+.booking-panel .booking-form input:focus,
+.booking-panel .booking-form select:focus,
+.booking-panel .booking-form textarea:focus {
+  outline: none;
+
+  border-color: #2f7d4a;
+
+  box-shadow:
+    0 0 0 3px rgba(47, 125, 74, 0.11);
+}
+
+.booking-panel .booking-form textarea {
+  min-height: 105px;
+
+  resize: vertical;
+
+  line-height: 1.5;
+}
+
+.booking-panel .booking-form input::placeholder,
+.booking-panel .booking-form textarea::placeholder {
+  color: #9aa49d;
+}
+
+.booking-panel .full-width {
+  grid-column: 1 / -1;
+}
+
+
+/* =========================================================
+   Available Slots
+   ========================================================= */
+
+.booking-panel .booking-slots {
+  margin-top: 0.25rem;
+
+  padding: 1.35rem;
+
+  border: 1px solid #dce9df;
+
+  border-radius: 14px;
+
+  background: #f8fbf8;
+}
+
+.booking-panel .booking-slots-heading {
+  margin-bottom: 1rem;
+}
+
+.booking-panel .booking-slots-heading h3 {
+  margin: 0 0 0.35rem;
+
+  color: #203326;
+
+  font-size: 1.2rem;
+
+  line-height: 1.3;
+}
+
+.booking-panel .booking-slots-heading p {
+  margin: 0;
+
+  color: #6b756e;
+
+  font-size: 0.88rem;
+}
+
+.booking-panel .booking-slot-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(4, minmax(140px, 1fr));
+
+  gap: 0.8rem;
+
+  margin-top: 1rem;
+}
+
+
+/* Individual Slot */
+
+.booking-panel .booking-slot {
+  width: 100%;
+
+  min-height: 78px;
+
+  padding: 0.85rem;
+
+  border: 1px solid #cfdad2;
+
+  border-radius: 11px;
+
+  background: #ffffff;
+
+  color: #26382b;
+
+  cursor: pointer;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.35rem;
+
+  font: inherit;
+
+  transition:
+    border-color 0.18s ease,
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.12s ease;
+}
+
+.booking-panel .booking-slot:hover {
+  border-color: #2f7d4a;
+
+  background: #f0f7f1;
+
+  box-shadow:
+    0 4px 12px rgba(47, 125, 74, 0.08);
+}
+
+.booking-panel .booking-slot:active {
+  transform: scale(0.98);
+}
+
+.booking-panel .booking-slot strong {
+  color: #1f3425;
+
+  font-size: 0.95rem;
+
+  font-weight: 750;
+}
+
+.booking-panel .booking-slot span {
+  color: #707b73;
+
+  font-size: 0.76rem;
+}
+
+.booking-panel .booking-slot-selected {
+  border-color: #2f7d4a;
+
+  background: #eaf5ec;
+
+  color: #1f5f36;
+
+  box-shadow:
+    0 0 0 2px rgba(47, 125, 74, 0.08);
+}
+
+.booking-panel .booking-slot-selected strong {
+  color: #1f5f36;
+}
+
+.booking-panel .booking-slot-selected span {
+  color: #2f7d4a;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   Selected Slot
+   ========================================================= */
+
+.booking-panel .selected-booking-slot {
+  margin-top: 1rem;
+
+  padding: 1rem 1.1rem;
+
+  border: 1px solid #bcd8c3;
+
+  border-radius: 11px;
+
+  background: #edf7ef;
+}
+
+.booking-panel .selected-booking-slot strong {
+  display: block;
+
+  margin-bottom: 0.3rem;
+
+  color: #245b32;
+
+  font-size: 0.82rem;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.04em;
+}
+
+.booking-panel .selected-booking-slot p {
+  margin: 0;
+
+  color: #36553d;
+
+  font-size: 0.94rem;
+
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   Booking Summary
+   ========================================================= */
+
+.booking-panel .booking-summary {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  padding: 1.15rem 1.25rem;
+
+  border: 1px solid #dce9df;
+
+  border-radius: 12px;
+
+  background: #f8faf9;
+
+  color: #59655d;
+
+  font-size: 0.9rem;
+}
+
+.booking-panel .booking-summary strong {
+  color: #1f522d;
+
+  font-size: 1.35rem;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   Booking Confirmation
+   ========================================================= */
+
+.booking-panel .booking-confirmation {
+  padding: 1.1rem 1.2rem;
+
+  border: 1px solid #cfe3d4;
+
+  border-radius: 12px;
+
+  background: #f1f7f2;
+}
+
+.booking-panel .booking-confirmation strong {
+  display: block;
+
+  margin-bottom: 0.35rem;
+
+  color: #1f5f36;
+
+  font-size: 0.96rem;
+}
+
+.booking-panel .booking-confirmation p {
+  margin: 0;
+
+  color: #4f6255;
+
+  font-size: 0.9rem;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   Notices
+   ========================================================= */
+
+.booking-panel .booking-notice {
+  margin: 0.75rem 0 0;
+
+  padding: 0.85rem 1rem;
+
+  border: 1px solid #dce9df;
+
+  border-radius: 9px;
+
+  background: #f8faf9;
+
+  color: #4b5c50;
+
+  font-size: 0.88rem;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   Confirm Booking Button
+   ========================================================= */
+
+.booking-panel .primary-button {
+  width: 100%;
+
+  min-height: 50px;
+
+  padding: 0.9rem 1.2rem;
+
+  border: none;
+
+  border-radius: 10px;
+
+  background: #2f7d4a;
+
+  color: #ffffff;
+
+  font: inherit;
+
+  font-weight: 750;
+
+  cursor: pointer;
+
+  box-shadow:
+    0 6px 15px rgba(47, 125, 74, 0.17);
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.booking-panel .primary-button:hover:not(:disabled) {
+  background: #245b32;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 8px 18px rgba(47, 125, 74, 0.22);
+}
+
+.booking-panel .primary-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.booking-panel .primary-button:disabled {
+  opacity: 0.55;
+
+  cursor: not-allowed;
+
+  box-shadow: none;
+}
+
+
+/* =========================================================
+   Tablet
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .booking-panel {
+    width: min(100% - 32px, 1100px);
+
+    padding: 1.75rem;
+  }
+
+  .booking-panel .booking-slot-grid {
+    grid-template-columns:
+      repeat(3, minmax(120px, 1fr));
+  }
+}
+
+
+/* =========================================================
+   Mobile
+   ========================================================= */
+
+@media (max-width: 650px) {
+  .booking-panel {
+    width: calc(100% - 24px);
+
+    margin: 1rem auto 3rem;
+
+    padding: 1.25rem;
+
+    border-radius: 14px;
+  }
+
+  .booking-panel .booking-heading {
+    flex-direction: column;
+
+    gap: 1rem;
+
+    margin-bottom: 1.5rem;
+  }
+
+  .booking-panel .close-button {
+    width: 100%;
+  }
+
+  .booking-panel .booking-form {
+    grid-template-columns: 1fr;
+
+    gap: 1rem;
+  }
+
+  .booking-panel .full-width {
+    grid-column: auto;
+  }
+
+  .booking-panel .booking-slots {
+    padding: 1rem;
+  }
+
+  .booking-panel .booking-slot-grid {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+
+    gap: 0.65rem;
+  }
+
+  .booking-panel .booking-slot {
+    min-height: 72px;
+
+    padding: 0.7rem;
+  }
+
+  .booking-panel .booking-summary {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+}
+
+
+/* =========================================================
+   Small Mobile
+   ========================================================= */
+
+@media (max-width: 400px) {
+  .booking-panel {
+    padding: 1rem;
+  }
+
+  .booking-panel .booking-slot-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-panel .booking-slot {
+    min-height: 64px;
+  }
+}

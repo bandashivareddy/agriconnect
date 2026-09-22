@@ -1,0 +1,10 @@
+.language-switch { display:flex; justify-content:flex-end; flex-wrap:wrap; gap:8px; padding:8px 12px; background:#f6f8f5; }
+.language-switch button { min-height:44px; padding:8px 16px; border:1px solid #bfd3ba; border-radius:9px; background:white; color:#285d34; font:inherit; cursor:pointer; }
+.language-switch button[aria-pressed="true"] { background:#2f6b3b; color:white; }
+.language-switch button:focus-visible { outline:3px solid #487e36; outline-offset:2px; }
+html[lang="te"] { line-height:1.65; }
+html[lang="te"] button, html[lang="te"] label, html[lang="te"] summary { line-height:1.6; overflow-wrap:anywhere; }
+html[lang="te"] button { min-height:44px; white-space:normal; max-width:100%; }
+html[lang="te"] .auth-card h1, html[lang="te"] .hero h1 { line-height:1.4; }
+html[lang="te"] .cm-tabs button { padding:10px 6px; }
+html[lang="te"] select { text-overflow:ellipsis; min-width:0; }

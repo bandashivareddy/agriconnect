@@ -1,0 +1,312 @@
+.equipment-page {
+  background: #f7f8f3;
+  min-height: 100vh;
+  padding: 32px max(6vw, 24px);
+}
+
+.equipment-content {
+  margin: 45px auto;
+  max-width: 1000px;
+}
+
+.equipment-content h1 {
+  font-size: 2.8rem;
+  margin: 0 0 10px;
+}
+
+.equipment-intro {
+  color: #607064;
+  margin-bottom: 28px;
+}
+
+.equipment-section {
+  background: white;
+  border: 1px solid #dce6d9;
+  border-radius: 14px;
+  margin-top: 25px;
+  padding: 28px;
+}
+
+.equipment-form {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.equipment-form label {
+  color: #29432e;
+  display: grid;
+  font-size: 0.9rem;
+  font-weight: 700;
+  gap: 8px;
+}
+
+.equipment-form input,
+.equipment-form select,
+.equipment-form textarea {
+  border: 1px solid #bfd0bd;
+  border-radius: 8px;
+  font: inherit;
+  font-weight: 400;
+  padding: 12px;
+}
+
+.equipment-full-width {
+  grid-column: 1 / -1;
+}
+
+.equipment-message {
+  background: #eaf3df;
+  border-radius: 8px;
+  color: #245b32;
+  font-weight: 700;
+  margin-top: 18px;
+  padding: 12px;
+}
+
+/* =========================================================
+   EQUIPMENT LIST
+   ========================================================= */
+
+.equipment-card {
+  align-items: center;
+  border-top: 1px solid #e2e9de;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 20px 0;
+}
+
+.equipment-card-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.equipment-card span {
+  color: #397444;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.equipment-card h3 {
+  margin: 7px 0;
+}
+
+.equipment-card p {
+  color: #607064;
+  margin: 6px 0;
+}
+
+.equipment-price {
+  align-items: end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 140px;
+}
+
+.equipment-price strong {
+  color: #1d522b;
+}
+
+.equipment-price small {
+  color: #607064;
+}
+
+.equipment-service-button {
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   SERVICES SUPPORTED
+   ========================================================= */
+
+.equipment-service-manager {
+  padding: 32px;
+}
+
+.equipment-service-manager-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  margin-bottom: 24px;
+}
+
+.equipment-service-manager-header h2 {
+  margin: 0 0 8px;
+}
+
+.equipment-service-manager-header p {
+  color: #607064;
+  margin: 0;
+}
+
+/* Service choices */
+
+.equipment-service-options {
+  display: grid;
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.equipment-service-option {
+  align-items: center;
+  background: #fbfcf9;
+  border: 1px solid #dce6d9;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  gap: 14px;
+  padding: 15px 16px;
+  transition:
+    border-color 0.15s ease,
+    background 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.equipment-service-option:hover {
+  background: #f5f8f2;
+  border-color: #a9c3a7;
+}
+
+.equipment-service-option input {
+  accent-color: #2f7d4a;
+  cursor: pointer;
+  flex-shrink: 0;
+  height: 20px;
+  margin: 0;
+  width: 20px;
+}
+
+.equipment-service-option span {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.equipment-service-option strong {
+  color: #17351e;
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.equipment-service-option small {
+  color: #607064;
+  font-size: 0.82rem;
+  line-height: 1.3;
+}
+
+/* Highlight selected service */
+
+.equipment-service-option:has(input:checked) {
+  background: #f0f7ea;
+  border-color: #70a477;
+  box-shadow: 0 2px 8px rgba(40, 80, 45, 0.08);
+}
+
+/* Save button inside service manager */
+
+.equipment-service-manager > .primary-button {
+  display: block;
+  margin: 20px auto 0;
+  min-width: 190px;
+}
+
+/* My Farms-aligned equipment workspace */
+.equipment-page { background: #f6f8f5; padding: 16px; }
+.equipment-content { margin: 0 auto; max-width: 680px; }
+.equipment-topbar { align-items: center; display: flex; justify-content: space-between; margin-bottom: 20px; }
+.equipment-topbar h1 { font-size: 22px; margin: 0; }
+.equipment-topbar > div, .equipment-back-button { height: 40px; width: 40px; }
+.equipment-back-button { background: #fff; border: 0; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,.08); font-size: 22px; }
+.equipment-intro { margin-bottom: 18px; }
+.equipment-intro h2 { font-size: 20px; margin: 0 0 5px; }
+.equipment-intro p { color: #667064; font-size: 14px; line-height: 1.5; margin: 0; }
+.equipment-collection { background: transparent; border: 0; box-shadow: none; margin-top: 0; padding: 0; }
+.equipment-add-section { margin-top: 14px; }
+.equipment-add-button { width: 100%; min-height: 46px; }
+.equipment-card { align-items: flex-start; background: #fff; border: 1px solid #dce6d9; border-radius: 16px; box-shadow: 0 2px 8px rgba(0,0,0,.05); margin-bottom: 16px; padding: 18px; }
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 650px) {
+  .equipment-page {
+    padding: 20px 14px;
+  }
+
+  .equipment-content {
+    margin: 30px auto;
+  }
+
+  .equipment-content h1 {
+    font-size: 2.1rem;
+  }
+
+  .equipment-section {
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .equipment-form {
+    grid-template-columns: 1fr;
+  }
+
+  .equipment-card {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .equipment-price {
+    align-items: flex-start;
+    min-width: 0;
+  }
+
+  .equipment-service-button {
+    width: 100%;
+  }
+
+  /* Service manager */
+
+  .equipment-service-manager {
+    padding: 20px;
+  }
+
+  .equipment-service-manager-header {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .equipment-service-manager-header .secondary-action {
+    align-self: flex-start;
+  }
+
+  .equipment-service-options {
+    gap: 10px;
+    margin: 20px 0;
+  }
+
+  .equipment-service-option {
+    min-height: 58px;
+    padding: 14px;
+  }
+
+  .equipment-service-option input {
+    height: 22px;
+    width: 22px;
+  }
+
+  .equipment-service-option strong {
+    font-size: 0.98rem;
+  }
+
+  .equipment-service-manager > .primary-button {
+    margin-top: 16px;
+    width: 100%;
+  }
+}

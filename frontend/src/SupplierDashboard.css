@@ -1,0 +1,823 @@
+ /* =========================================
+    AGRICONNECT - SUPPLIER DASHBOARD
+    Mobile-first responsive design
+    ========================================= */
+
+.supplier-page {
+  min-height: 100vh;
+  background: #f6f8f4;
+  color: #203326;
+}
+
+/* =========================================
+   TOP BAR
+   ========================================= */
+
+.supplier-topbar {
+  width: 100%;
+  box-sizing: border-box;
+  background: #ffffff;
+  border-bottom: 1px solid #e1e8de;
+  padding: 12px 16px;
+}
+
+.supplier-topbar .back-button {
+  background: transparent;
+  border: none;
+  color: #2f6b3b;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 700;
+  padding: 6px 0;
+}
+
+.supplier-topbar .back-button:hover {
+  color: #1f542c;
+}
+
+/* =========================================
+   MAIN CONTENT
+   ========================================= */
+
+.supplier-content {
+  width: min(1080px, calc(100% - 24px));
+  margin: 0 auto;
+  padding: 22px 0 48px;
+}
+
+/* =========================================
+   SUPPLIER HERO
+   ========================================= */
+
+.supplier-hero {
+  margin-bottom: 18px;
+}
+
+.supplier-hero .eyebrow {
+  margin-bottom: 7px;
+}
+
+.supplier-hero h1 {
+  color: #183d22;
+  font-size: 1.8rem;
+  font-weight: 750;
+  line-height: 1.15;
+  margin: 0 0 7px;
+}
+
+.supplier-intro {
+  color: #657267;
+  font-size: 0.9rem;
+  line-height: 1.45;
+  margin: 0;
+}
+
+/* =========================================
+   EYEBROW
+   ========================================= */
+
+.eyebrow {
+  color: #28713b;
+  font-size: 0.72rem;
+  font-weight: 850;
+  letter-spacing: 0.14em;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+/* =========================================
+   SUMMARY CARDS
+   ========================================= */
+
+.supplier-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-bottom: 18px;
+  max-width: 480px;
+}
+
+.supplier-summary-card {
+  background: #ffffff;
+  border: 1px solid #dfe7dc;
+  border-radius: 13px;
+  padding: 13px 14px;
+  box-shadow: 0 2px 8px rgba(28, 55, 34, 0.04);
+}
+
+.supplier-summary-card span {
+  color: #68756b;
+  display: block;
+  font-size: 0.73rem;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.supplier-summary-card strong {
+  color: #1d5a2c;
+  display: block;
+  font-size: 1.3rem;
+  line-height: 1.1;
+}
+
+/* =========================================
+   COMMON SECTION
+   ========================================= */
+
+.supplier-section {
+  background: #ffffff;
+  border: 1px solid #dfe7dc;
+  border-radius: 15px;
+  margin-top: 14px;
+  padding: 16px;
+  box-shadow: 0 2px 9px rgba(28, 55, 34, 0.04);
+  text-align: left;
+}
+
+/* =========================================
+   SECTION HEADING
+   ========================================= */
+
+.supplier-section-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+}
+
+.supplier-section-heading h2 {
+  color: #1b4125;
+  font-size: 1.15rem;
+  font-weight: 750;
+  line-height: 1.25;
+  margin: 5px 0 0;
+}
+
+.supplier-section-heading p:not(.eyebrow) {
+  color: #68756b;
+  font-size: 0.84rem;
+  line-height: 1.4;
+  margin: 5px 0 0;
+}
+
+.booking-count {
+  flex-shrink: 0;
+  background: #eef5e9;
+  border-radius: 999px;
+  color: #35683e;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 6px 9px;
+  white-space: nowrap;
+}
+
+/* =========================================
+   BOOKING LIST
+   ========================================= */
+
+.supplier-booking-list {
+  margin-top: 8px;
+}
+
+/* =========================================
+   BOOKING CARD
+   ========================================= */
+
+.supplier-booking-card {
+  border-top: 1px solid #e5ebe2;
+  padding: 15px 0;
+  text-align: left;
+}
+
+.supplier-booking-card:first-child {
+  border-top: none;
+  padding-top: 8px;
+}
+
+.supplier-booking-main {
+  min-width: 0;
+}
+
+/* =========================================
+   BOOKING HEADER
+   ========================================= */
+
+.supplier-booking-header {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.status {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  font-weight: 850;
+  padding: 5px 9px;
+  text-transform: capitalize;
+  white-space: nowrap;
+}
+
+/* Status colours */
+
+.status-pending {
+  background: #fff2d6;
+  color: #8a5a00;
+}
+
+.status-confirmed {
+  background: #e4f1ff;
+  color: #245b91;
+}
+
+.status-in_progress {
+  background: #eee6ff;
+  color: #6840a0;
+}
+
+.status-completed {
+  background: #ddf3e1;
+  color: #26713a;
+}
+
+.status-rejected,
+.status-cancelled {
+  background: #fde3e0;
+  color: #a5332a;
+}
+
+.status-disputed {
+  background: #ffe5c7;
+  color: #95510c;
+}
+
+.supplier-booking-number {
+  color: #69766c;
+  font-size: 0.74rem;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+/* =========================================
+   BOOKING TITLE + PRICE
+   ========================================= */
+
+.supplier-booking-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 7px;
+}
+
+.supplier-booking-title-row h3 {
+  color: #21482a;
+  font-size: 1rem;
+  font-weight: 750;
+  line-height: 1.3;
+  margin: 0;
+}
+
+.supplier-booking-price {
+  color: #1d5a2c;
+  font-size: 0.98rem;
+  font-weight: 850;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+/* =========================================
+   BOOKING DETAILS
+   ========================================= */
+
+.supplier-booking-details {
+  margin-top: 7px;
+}
+
+.supplier-booking-details p {
+  color: #657267;
+  font-size: 0.84rem;
+  line-height: 1.42;
+  margin: 3px 0;
+}
+
+.supplier-booking-details strong {
+  color: #425247;
+  font-weight: 750;
+}
+
+.supplier-booking-note {
+  background: #f8faf6;
+  border-left: 3px solid #9ab39b;
+  margin-top: 7px !important;
+  padding: 7px 9px;
+}
+
+/* =========================================
+   BOOKING ACTIONS
+   ========================================= */
+
+.supplier-booking-actions {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.supplier-booking-actions > .book-button {
+  width: 100%;
+}
+
+.booking-action-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+.booking-action-row button,
+.supplier-booking-actions > button {
+  box-sizing: border-box;
+  min-height: 44px;
+  border-radius: 8px;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.84rem;
+  font-weight: 750;
+  padding: 10px 12px;
+}
+
+.book-button {
+  background: #2f6b3b;
+  border: 1px solid #2f6b3b;
+  color: #ffffff;
+}
+
+.book-button:hover {
+  background: #285f33;
+}
+
+.secondary-action {
+  background: #ffffff;
+  border: 1px solid #cfd9cc;
+  color: #8b3028;
+}
+
+.secondary-action:hover {
+  background: #fff7f5;
+}
+
+/* =========================================
+   EMPTY STATE
+   ========================================= */
+
+.supplier-empty-state {
+  background: #f8faf7;
+  border: 1px dashed #cbd8c8;
+  border-radius: 10px;
+  color: #68756b;
+  margin-top: 12px;
+  padding: 18px 14px;
+  text-align: center;
+}
+
+.supplier-empty-state strong {
+  color: #36533d;
+  display: block;
+  font-size: 0.9rem;
+}
+
+.supplier-empty-state p {
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin: 5px 0 0;
+}
+
+/* =========================================
+   MY SERVICES
+   ========================================= */
+
+.supplier-service-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.supplier-service-card {
+  background: #fbfcfa;
+  border: 1px solid #e0e7dd;
+  border-radius: 11px;
+  padding: 14px;
+}
+
+.supplier-service-card-top span {
+  color: #397444;
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.supplier-service-card h3 {
+  color: #234b2c;
+  font-size: 0.98rem;
+  line-height: 1.3;
+  margin: 6px 0;
+}
+
+.supplier-service-card p {
+  color: #68756b;
+  font-size: 0.83rem;
+  line-height: 1.4;
+  margin: 0 0 11px;
+}
+
+.supplier-service-price {
+  color: #1d5a2c;
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+/* =========================================
+   ADD SERVICE FORM
+   ========================================= */
+
+.add-service {
+  margin-bottom: 0;
+}
+
+.supplier-form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.supplier-form label {
+  display: grid;
+  gap: 6px;
+  color: #29432e;
+  font-size: 0.8rem;
+  font-weight: 750;
+}
+
+.supplier-form input,
+.supplier-form select,
+.supplier-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #cbd7c8;
+  border-radius: 8px;
+  color: #26382b;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 400;
+  min-height: 43px;
+  padding: 10px 11px;
+}
+
+.supplier-form textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.supplier-form input:focus,
+.supplier-form select:focus,
+.supplier-form textarea:focus {
+  border-color: #4b8055;
+  outline: 2px solid rgba(75, 128, 85, 0.12);
+}
+
+.supplier-form input:disabled {
+  background: #f1f4ef;
+  color: #8a958b;
+}
+
+.supplier-full-width {
+  grid-column: 1 / -1;
+}
+
+/* =========================================
+   FORM BUTTON
+   ========================================= */
+
+.supplier-form .primary-button {
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 45px;
+  background: #2f6b3b;
+  border: 1px solid #2f6b3b;
+  border-radius: 8px;
+  color: #ffffff;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 800;
+  padding: 10px 14px;
+}
+
+.supplier-form .primary-button:hover {
+  background: #285f33;
+}
+
+/* =========================================
+   MESSAGES
+   ========================================= */
+
+.supplier-message {
+  background: #edf6e8;
+  border: 1px solid #d3e5cc;
+  border-radius: 8px;
+  color: #285d34;
+  font-size: 0.83rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 12px 0 0;
+  padding: 10px 11px;
+}
+
+/* =========================================
+   TABLET
+   ========================================= */
+
+@media (min-width: 651px) {
+  .supplier-content {
+    width: min(1080px, calc(100% - 40px));
+    padding-top: 28px;
+  }
+
+  .supplier-hero h1 {
+    font-size: 2.15rem;
+  }
+
+  .supplier-summary {
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+
+  .supplier-summary-card {
+    padding: 14px 16px;
+  }
+
+  .supplier-section {
+    padding: 20px;
+  }
+
+  .supplier-booking-card {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 150px;
+    gap: 18px;
+    align-items: center;
+  }
+
+  .supplier-booking-actions {
+    margin-top: 0;
+  }
+
+  .supplier-booking-actions > .book-button {
+    width: 100%;
+  }
+
+  .supplier-service-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .supplier-form {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .supplier-form .primary-button {
+    width: auto;
+    min-width: 170px;
+  }
+}
+
+/* =========================================
+   DESKTOP
+   ========================================= */
+
+@media (min-width: 1000px) {
+  .supplier-content {
+    padding-top: 32px;
+  }
+
+  .supplier-hero h1 {
+    font-size: 2.3rem;
+  }
+
+  .supplier-section {
+    padding: 22px;
+  }
+
+  .supplier-service-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+/* =========================================
+   FINAL BOOKING ACTION LAYOUT
+   ========================================= */
+
+.supplier-booking-actions {
+  margin-top: 12px;
+  width: 100%;
+}
+
+.supplier-booking-actions > .book-button {
+  width: auto;
+  min-width: 120px;
+}
+
+.booking-action-row {
+  display: flex;
+  gap: 8px;
+  width: fit-content;
+}
+
+.booking-action-row button {
+  min-width: 100px;
+}
+
+/* Desktop / tablet */
+
+@media (min-width: 651px) {
+  .supplier-booking-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 12px;
+  }
+
+  .supplier-booking-actions > .book-button {
+    width: auto;
+    min-width: 120px;
+  }
+
+  .booking-action-row {
+    width: auto;
+  }
+}
+
+/* Mobile */
+
+@media (max-width: 650px) {
+  .supplier-booking-actions {
+    width: 100%;
+  }
+
+  .supplier-booking-actions > .book-button {
+    width: 100%;
+  }
+
+  .booking-action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+  }
+
+  .booking-action-row button {
+    width: 100%;
+    min-width: 0;
+  }
+}
+.supplier-booking-message {
+  background: #fff4f2;
+  border: 1px solid #f0c9c3;
+  border-radius: 8px;
+  color: #a5332a;
+  font-size: 0.82rem;
+  font-weight: 700;
+  line-height: 1.4;
+  margin: 10px 0 0;
+  padding: 9px 11px;
+}
+
+/* =========================================
+   PROVIDER VERIFICATION DOCUMENTS
+   ========================================= */
+
+.provider-document-list {
+  margin-top: 22px;
+}
+
+.provider-document-list > h3 {
+  color: #29432e;
+  font-size: 0.95rem;
+  margin: 0 0 8px;
+}
+
+.provider-document-loading {
+  color: #68756b;
+  font-size: 0.84rem;
+  margin: 12px 0 0;
+}
+
+.provider-document-card {
+  border-top: 1px solid #e5ebe2;
+  padding: 14px 0;
+}
+
+.provider-document-card-header {
+  align-items: flex-start;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+}
+
+.provider-document-card h4 {
+  color: #21482a;
+  font-size: 0.92rem;
+  line-height: 1.35;
+  margin: 0;
+}
+
+.provider-document-card p {
+  color: #68756b;
+  font-size: 0.82rem;
+  line-height: 1.4;
+  margin: 4px 0 0;
+  overflow-wrap: anywhere;
+}
+
+.provider-document-status {
+  border-radius: 999px;
+  flex-shrink: 0;
+  font-size: 0.7rem;
+  font-weight: 850;
+  padding: 5px 9px;
+  text-transform: capitalize;
+}
+
+.provider-document-status-pending {
+  background: #fff2d6;
+  color: #8a5a00;
+}
+
+.provider-document-status-verified {
+  background: #ddf3e1;
+  color: #26713a;
+}
+
+.provider-document-status-rejected {
+  background: #fde3e0;
+  color: #a5332a;
+}
+
+.provider-document-reference strong {
+  color: #425247;
+}
+
+.provider-document-reference-note {
+  color: #68756b;
+  font-size: 0.78rem;
+  line-height: 1.45;
+  margin: -3px 0 0;
+}
+
+.provider-documents-section-legacy {
+  display: none;
+}
+
+.provider-workspace-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 14px;
+}
+
+.provider-workspace-card {
+  align-items: center;
+  background: #f9fbf8;
+  border: 1px solid #e0e8dd;
+  border-radius: 12px;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  padding: 14px;
+}
+
+.provider-workspace-card h3 {
+  color: #21482a;
+  font-size: 0.95rem;
+  margin: 0 0 4px;
+}
+
+.provider-workspace-card p {
+  color: #68756b;
+  font-size: 0.8rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.provider-workspace-card-static {
+  opacity: 0.8;
+}
+
+@media (max-width: 480px) {
+  .provider-workspace-card {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
