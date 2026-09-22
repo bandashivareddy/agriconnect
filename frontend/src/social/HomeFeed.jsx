@@ -1,36 +1,4 @@
-const posts = [
-  {
-    id: 1,
-    author: "Ramesh",
-    context: "Mango farmer · Nalgonda",
-    time: "2h",
-    text: "Good flowering this week. The trees that were pruned after harvest are looking noticeably better.",
-    crop: "🥭 Mango",
-    useful: 34,
-    comments: 8,
-  },
-  {
-    id: 2,
-    author: "Srinivas",
-    context: "Cotton grower",
-    time: "4h",
-    text: "Seeing these spots on younger cotton leaves. Has anyone faced this recently?",
-    crop: "🌱 Cotton",
-    useful: 12,
-    comments: 19,
-    question: true,
-  },
-  {
-    id: 3,
-    author: "Lakshmi",
-    context: "Farm update · Warangal",
-    time: "6h",
-    text: "First harvest from this plot today. Small beginning, but a satisfying one.",
-    crop: "🌶️ Chilli",
-    useful: 57,
-    comments: 11,
-  },
-];
+import { posts } from "./mockSocialData";
 
 function HomeFeed() {
   return (
@@ -67,10 +35,18 @@ function HomeFeed() {
 
             <div className="crop-chip">{post.crop}</div>
 
-            <div className="media-placeholder">
-              <span>Farm photo</span>
-            </div>
-
+            {post.image ? (
+  <div className="post-media">
+    <img
+      src={post.image}
+      alt={post.imageAlt || ""}
+    />
+  </div>
+) : (
+  <div className="media-placeholder">
+    <span>Farm photo</span>
+  </div>
+)}
             <div className="post-actions">
               <button>♡ Useful {post.useful}</button>
               <button>💬 {post.comments}</button>

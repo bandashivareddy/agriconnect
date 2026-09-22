@@ -1,7 +1,11 @@
+import { useState } from "react";
 import HomeFeed from "./HomeFeed";
+import Explore from "./Explore";
 import "./SocialShell.css";
 
 function SocialShell({ user }) {
+  const [section, setSection] = useState("home");
+
   return (
     <div className="social-shell">
       <header className="social-topbar">
@@ -17,16 +21,25 @@ function SocialShell({ user }) {
       </header>
 
       <main className="social-content">
-        <HomeFeed />
+        {section === "home" && <HomeFeed />}
+        {section === "explore" && <Explore />}
       </main>
 
       <nav className="social-bottom-nav" aria-label="Main navigation">
-        <button className="social-nav-item active" type="button">
+        <button
+          className={`social-nav-item ${section === "home" ? "active" : ""}`}
+          type="button"
+          onClick={() => setSection("home")}
+        >
           <span>⌂</span>
           <small>Home</small>
         </button>
 
-        <button className="social-nav-item" type="button">
+        <button
+          className={`social-nav-item ${section === "explore" ? "active" : ""}`}
+          type="button"
+          onClick={() => setSection("explore")}
+        >
           <span>⌕</span>
           <small>Explore</small>
         </button>
