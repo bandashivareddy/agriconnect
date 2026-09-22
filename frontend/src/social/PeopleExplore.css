@@ -1,0 +1,112 @@
+.people-explore {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 20px 16px 32px;
+}
+
+.people-discovery-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin: 22px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.people-discovery-card {
+  padding: 16px;
+  border: 1px solid #dce4d9;
+  border-radius: 16px;
+  background: #ffffff;
+}
+
+.people-discovery-heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.people-avatar {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  background: #e3efe4;
+  color: #2e6b3a;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.people-discovery-heading h2 {
+  flex: 1;
+  margin: 0;
+  color: #23482c;
+  font-size: 1.05rem;
+}
+
+.people-discovery-heading h2 button {
+  min-height: 44px;
+  padding: 8px 0;
+  border: 0;
+  background: transparent;
+  color: #2e6b3a;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.people-follow {
+  min-height: 44px;
+  padding: 10px 14px;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background: #eebc20;
+  color: #20251f;
+  font: inherit;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.people-follow[aria-pressed="true"] {
+  border-color: #2e6b3a;
+  background: #eaf3e9;
+  color: #24582f;
+}
+
+.people-identity {
+  margin: 10px 0 6px;
+  color: #526052;
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.people-bio,
+.people-empty {
+  margin: 6px 0 12px;
+  color: #687267;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.people-interests {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.people-interests li {
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #edf5ec;
+  color: #315f36;
+  font-size: 12px;
+  font-weight: 600;
+}

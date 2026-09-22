@@ -33,6 +33,44 @@ export const farms = [
   },
 ];
 
+export const people = [
+  {
+    id: "ramesh",
+    name: "Ramesh",
+    identity: "Mango farmer · Nalgonda",
+    bio: "I enjoy watching the orchard change with the seasons and sharing what I learn along the way.",
+    interests: ["Mango", "Orchard stories"],
+  },
+  {
+    id: "srinivas",
+    name: "Srinivas",
+    identity: "Bhendi grower · Nalgonda",
+    bio: "Sharing small discoveries from the field and learning from other growers.",
+    interests: ["Bhendi", "Growing together"],
+  },
+  {
+    id: "anitha",
+    name: "Anitha",
+    identity: "Agronomist who loves explaining plants · Hyderabad",
+    bio: "Curious about the why behind healthy crops. I share simple observations and enjoy a good crop question.",
+    interests: ["Crop knowledge", "Soil life"],
+  },
+  {
+    id: "mahesh",
+    name: "Mahesh",
+    identity: "Tractor enthusiast · Karimnagar",
+    bio: "Happiest talking about machines, sharing field-day photos and hearing how others use their tools.",
+    interests: ["Machinery", "Tractors"],
+  },
+  {
+    id: "kavitha",
+    name: "Kavitha",
+    identity: "Finding nature in everyday farm life · Warangal",
+    bio: "Birdsong, rainy mornings and little green things. Sharing the moments that make me stop and look.",
+    interests: ["Farm life", "Birds", "Nature"],
+  },
+];
+
 export const posts = [
   {
     id: 1,

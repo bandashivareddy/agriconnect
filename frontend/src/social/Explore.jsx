@@ -3,9 +3,14 @@ import { useState } from "react";
 import CropExplore from "./CropExplore";
 import QuestionsExplore from "./QuestionsExplore";
 import FarmsExplore from "./FarmsExplore";
+import PeopleExplore from "./PeopleExplore";
 
 function Explore() {
   const [view, setView] = useState("main");
+
+  if (view === "people") {
+    return <PeopleExplore onBack={() => setView("main")} />;
+  }
 
   if (view === "farms") {
     return <FarmsExplore onBack={() => setView("main")} />;
@@ -88,7 +93,7 @@ function Explore() {
             <span className="explore-arrow">›</span>
           </button>
 
-          <button type="button">
+          <button type="button" onClick={() => setView("people")}>
             <span>👥</span>
 
             <div>
