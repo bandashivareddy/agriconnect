@@ -1,0 +1,279 @@
+* {
+  box-sizing: border-box;
+}
+
+.social-shell {
+  min-height: 100vh;
+  background: #f7f8f4;
+  color: #20251f;
+  padding-bottom: 72px;
+}
+
+.social-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  height: 58px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  background: #ffffff;
+  border-bottom: 1px solid #e6e9e2;
+}
+
+.social-brand {
+  color: #2e6b3a;
+  font-size: 22px;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+}
+
+.notification-button,
+.post-more {
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.notification-button {
+  font-size: 20px;
+  padding: 8px;
+}
+
+.social-content {
+  width: 100%;
+}
+
+.social-home {
+  width: 100%;
+  max-width: 620px;
+  margin: 0 auto;
+}
+
+.feed-tabs {
+  position: sticky;
+  top: 58px;
+  z-index: 15;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #ffffff;
+  border-bottom: 1px solid #e6e9e2;
+}
+
+.feed-tab {
+  position: relative;
+  border: 0;
+  background: transparent;
+  padding: 14px 6px 12px;
+  color: #697068;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.feed-tab.active {
+  color: #2e6b3a;
+}
+
+.feed-tab.active::after {
+  content: "";
+  position: absolute;
+  left: 24%;
+  right: 24%;
+  bottom: 0;
+  height: 3px;
+  border-radius: 3px 3px 0 0;
+  background: #2e6b3a;
+}
+
+.feed {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.feed-card {
+  background: #ffffff;
+  padding: 14px 16px 0;
+  border-top: 1px solid #eceee9;
+  border-bottom: 1px solid #eceee9;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.avatar {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: #e3efe4;
+  color: #2e6b3a;
+  font-size: 17px;
+  font-weight: 800;
+}
+
+.post-author {
+  min-width: 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.post-author strong {
+  font-size: 15px;
+}
+
+.post-author span {
+  color: #747b73;
+  font-size: 12px;
+}
+
+.post-more {
+  color: #6e746d;
+  font-size: 18px;
+  padding: 8px 0 8px 12px;
+}
+
+.post-type {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #fff4c7;
+  color: #715c00;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.post-text {
+  margin: 12px 0 10px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.crop-chip {
+  display: inline-flex;
+  margin-bottom: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #edf5ec;
+  color: #315f36;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.media-placeholder {
+  height: 280px;
+  margin: 0 -16px;
+  display: grid;
+  place-items: center;
+  background: #e7ece3;
+  color: #7b8278;
+  font-size: 14px;
+}
+
+.post-actions {
+  height: 48px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  align-items: center;
+}
+
+.post-actions button {
+  height: 100%;
+  border: 0;
+  background: transparent;
+  color: #596057;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.social-bottom-nav {
+  position: fixed;
+  z-index: 30;
+  left: 50%;
+  bottom: 0;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 620px;
+  height: 66px;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  align-items: center;
+  background: #ffffff;
+  border-top: 1px solid #dfe3dc;
+}
+
+.social-nav-item {
+  height: 100%;
+  border: 0;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: #747b73;
+  cursor: pointer;
+}
+
+.social-nav-item span {
+  font-size: 20px;
+  line-height: 20px;
+}
+
+.social-nav-item small {
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.social-nav-item.active {
+  color: #2e6b3a;
+}
+
+.social-create-button {
+  justify-self: center;
+  width: 48px;
+  height: 48px;
+  border: 0;
+  border-radius: 50%;
+  background: #e5b82e;
+  color: #263121;
+  font-size: 30px;
+  line-height: 1;
+  font-weight: 400;
+  cursor: pointer;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.14);
+}
+
+@media (min-width: 621px) {
+  .social-home {
+    border-left: 1px solid #e2e5df;
+    border-right: 1px solid #e2e5df;
+  }
+
+  .social-topbar {
+    padding-left: max(16px, calc((100% - 620px) / 2 + 16px));
+    padding-right: max(16px, calc((100% - 620px) / 2 + 16px));
+  }
+
+  .feed-card {
+    border-left: 0;
+    border-right: 0;
+  }
+}
+/* Social UI owns its own text alignment.
+   The legacy application centers #root globally. */
+.social-shell {
+  text-align: left;
+}

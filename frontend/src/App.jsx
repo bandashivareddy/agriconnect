@@ -22,6 +22,7 @@ import MyServices from "./MyServices";
 import ProviderProfile from "./ProviderProfile";
 import ProviderVerification from "./ProviderVerification";
 import { API_BASE_URL } from "./api";
+import SocialShell from "./social/SocialShell";
 
 const API_URL = API_BASE_URL;
 
@@ -90,9 +91,22 @@ function App() {
   const [cropCreateContext, setCropCreateContext] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
   const [page, setPage] = useState(() => {
-    try { return JSON.parse(localStorage.getItem("current_user"))?.capabilities?.includes("field_officer") ? "field-work" : "marketplace"; }
-    catch { return "marketplace"; }
-  });
+  const token = localStorage.getItem("access_token");
+
+  if (!token) {
+    return "marketplace";
+  }
+
+  try {
+    return JSON.parse(
+      localStorage.getItem("current_user")
+    )?.capabilities?.includes("field_officer")
+      ? "field-work"
+      : "home";
+  } catch {
+    return "marketplace";
+  }
+});
 
   const [adminMetrics, setAdminMetrics] = useState(null);
   const [adminLoading, setAdminLoading] = useState(false);
@@ -330,7 +344,7 @@ function App() {
     } else if (userIsProvider && !userIsFarmer) {
       setPage("supplier");
     } else {
-      setPage("marketplace");
+      setPage("home");
     }
   }
 
@@ -500,7 +514,9 @@ function App() {
     return <AuthenticatedPage onSignOut={handleLogout}><FieldWork token={auth.token} onBack={goToMarketplace} /></AuthenticatedPage>;
   }
 
-  if (auth && setupToken !== auth.token) {
+  if (auth && 
+    page !== "home" &&
+    setupToken !== auth.token) {
     return (
       <AuthenticatedPage onSignOut={handleLogout}>
         <Onboarding token={auth.token} onComplete={handleSetupComplete} onBack={handleLogout} />
@@ -523,6 +539,17 @@ function App() {
    * =====================================================
    */
 
+  if (page === "home") {
+  if (!auth) {
+    return null;
+  }
+
+  return (
+    <SocialShell
+      user={auth.user}
+    />
+  );
+}
   if (page === "crop-cycles") {
     if (!auth || !isFarmer) return null;
     return <AuthenticatedPage onSignOut={handleLogout}><CropManagement farmerId={auth.user.user_id} initialCycleId={cropEntry} initialContext={cropCreateContext} onContextConsumed={() => setCropCreateContext(null)} token={auth.token} onBack={goToMarketplace} onFarms={goToFarmSetup} /></AuthenticatedPage>;
