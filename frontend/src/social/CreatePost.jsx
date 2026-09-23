@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { farms, posts } from "./mockSocialData";
+import PostCard from "./PostCard";
 import "./CreatePost.css";
 
 const crops = [...new Set([
@@ -10,7 +11,7 @@ const crops = [...new Set([
   ...farms.flatMap((farm) => farm.crops),
 ])];
 
-function CreatePost({ onClose }) {
+function CreatePost({ user, onClose }) {
   const dialog = useRef(null);
   const [text, setText] = useState("");
   const [crop, setCrop] = useState("");
@@ -18,7 +19,11 @@ function CreatePost({ onClose }) {
   const [context, setContext] = useState(null);
   const [question, setQuestion] = useState(false);
   const [mediaNotice, setMediaNotice] = useState(false);
-  const [submitted, setSubmitted] = useState(false);
+  const [submitted, setSubmitted] = useState(null);
+  const authorPerson = {
+    id: `user:${user?.user_id ?? "current"}`,
+    name: user?.full_name?.trim() || "You",
+  };
 
   useEffect(() => {
     const element = dialog.current;
@@ -28,7 +33,20 @@ function CreatePost({ onClose }) {
 
   function submit(event) {
     event.preventDefault();
-    if (text.trim()) setSubmitted(true);
+    if (!text.trim()) return;
+    const cropKey = crop.toLowerCase();
+    const existingCrop = posts.find((post) => post.cropKey === cropKey);
+    setSubmitted({
+      id: crypto.randomUUID(),
+      personId: authorPerson.id,
+      author: authorPerson.name,
+      context: "Just now",
+      time: "Preview",
+      text: text.trim(),
+      ...(farmId ? { farmId } : {}),
+      ...(crop ? { cropKey, crop: existingCrop?.crop || crop } : {}),
+      ...(question ? { question: true } : {}),
+    });
   }
 
   return (
@@ -50,6 +68,7 @@ function CreatePost({ onClose }) {
       {submitted ? (
         <div className="create-post-confirmation">
           <p role="status">Preview complete. Your post hasn’t been published.</p>
+          <PostCard post={submitted} authorPerson={authorPerson} showMediaPlaceholder={false} />
           <button className="create-post-submit" type="button" onClick={onClose}>Done</button>
         </div>
       ) : (
@@ -67,6 +86,7 @@ function CreatePost({ onClose }) {
             value={text}
             onChange={(event) => setText(event.target.value)}
           />
+          <p className="create-post-context-label">Add context <span>(optional)</span></p>
           <div className="create-post-context" aria-label="Optional context">
             <button type="button" aria-expanded={context === "crop"} onClick={() => setContext(context === "crop" ? null : "crop")}>
               {crop ? `Crop: ${crop}` : "Add crop"}

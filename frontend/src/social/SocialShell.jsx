@@ -144,7 +144,7 @@ function SocialShell({ user }) {
           <small>You</small>
         </button>
       </nav>
-      {creating && <CreatePost onClose={() => setCreating(false)} />}
+      {creating && <CreatePost user={user} onClose={() => setCreating(false)} />}
     </div>
     </SocialPeopleContext.Provider>
   );

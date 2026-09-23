@@ -3,12 +3,13 @@ import { SocialPeopleContext } from "./SocialPeopleContext";
 import { people, farms } from "./mockSocialData";
 import "./PostCard.css";
 
-function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversationTarget }) {
+function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversationTarget, authorPerson }) {
   const socialPeople = useContext(SocialPeopleContext);
-  const person = people.find((entry) => entry.id === post.personId);
+  const profilePerson = people.find((entry) => entry.id === post.personId);
+  const person = profilePerson || (authorPerson?.id === post.personId ? authorPerson : null);
   const farm = person && farms.find((entry) => entry.id === post.farmId);
   const authorName = person?.name || post.author;
-  const hasPersonProfile = socialPeople && person;
+  const hasPersonProfile = socialPeople && profilePerson;
   const commentsId = useId();
   const [loved, setLoved] = useState(false);
   const [manuallyOpen, setCommentsOpen] = useState(false);

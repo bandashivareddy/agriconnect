@@ -118,6 +118,16 @@
   gap: 8px;
 }
 
+.create-post-context-label {
+  margin: 0 0 6px;
+  color: #687267;
+  font-size: 12px;
+}
+
+.create-post-confirmation > .create-post-submit {
+  margin-top: 12px;
+}
+
 .create-post-context button {
   min-height: 44px;
   padding: 8px 12px;
