@@ -13,6 +13,7 @@ function SocialShell({ user }) {
   const [notifications, setNotifications] = useState(mockNotifications);
   const [conversationTarget, setConversationTarget] = useState(null);
   const [followedPersonIds, setFollowedPersonIds] = useState(["ramesh"]);
+  const [followedFarmIds, setFollowedFarmIds] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [feedTab, setFeedTab] = useState("for-you");
 
@@ -20,6 +21,12 @@ function SocialShell({ user }) {
     setFollowedPersonIds((ids) => ids.includes(personId)
       ? ids.filter((id) => id !== personId)
       : [...ids, personId]);
+  }
+
+  function toggleFarmFollow(farmId) {
+    setFollowedFarmIds((ids) => ids.includes(farmId)
+      ? ids.filter((id) => id !== farmId)
+      : [...ids, farmId]);
   }
 
   function openPerson(personId) {
@@ -35,7 +42,7 @@ function SocialShell({ user }) {
   }
 
   return (
-    <SocialPeopleContext.Provider value={{ followedPersonIds, toggleFollow, openPerson }}>
+    <SocialPeopleContext.Provider value={{ followedPersonIds, toggleFollow, openPerson, followedFarmIds, toggleFarmFollow }}>
     <div className="social-shell">
       <header className="social-topbar">
         <div className="social-brand">AgriConnect</div>

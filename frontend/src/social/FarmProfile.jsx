@@ -6,7 +6,7 @@ import "./FarmProfile.css";
 
 function FarmProfile({ farm, following, onToggleFollow, onBack }) {
   const [tab, setTab] = useState("updates");
-  const updates = posts.filter((post) => farm.postIds.includes(post.id));
+  const updates = posts.filter((post) => post.farmId === farm.id);
 
   return (
     <section className="farm-profile">
@@ -28,7 +28,7 @@ function FarmProfile({ farm, following, onToggleFollow, onBack }) {
           aria-pressed={following}
           onClick={onToggleFollow}
         >
-          {following ? "Following" : "Follow"}
+          <span>{following ? "Following ✓" : "Follow Farm"}</span>
         </button>
       </header>
       <div className="farm-profile-tabs" aria-label="Farm sections">

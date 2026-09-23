@@ -60,22 +60,44 @@
 }
 
 .farm-profile-follow {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   min-height: 44px;
-  padding: 10px 24px;
-  border: 1px solid transparent;
-  border-radius: 999px;
-  background: #eebc20;
+  padding: 7px 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
   color: #20251f;
   font: inherit;
-  font-size: 0.9rem;
-  font-weight: 700;
+  font-size: 12px;
+  font-weight: 600;
   cursor: pointer;
 }
 
-.farm-profile-follow[aria-pressed="true"] {
-  border-color: #2e6b3a;
-  background: #eaf3e9;
-  color: #24582f;
+.farm-profile-follow > span {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  min-width: 92px;
+  min-height: 30px;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  background: #eebc20;
+  white-space: nowrap;
+}
+
+.farm-profile-follow[aria-pressed="true"] > span {
+  border-color: #cbd5c9;
+  background: #ffffff;
+  color: #405b43;
+}
+
+.farm-profile-follow:focus-visible {
+  outline: 2px solid #61795b;
+  outline-offset: 2px;
 }
 
 .farm-profile-tabs {

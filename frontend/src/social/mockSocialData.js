@@ -11,7 +11,6 @@ export const farms = [
     location: "Nalgonda, Telangana",
     crops: ["Mango", "Coconut", "Oil Palm"],
     bio: "Sharing seasonal moments, orchard stories and everyday discoveries from our farm.",
-    postIds: [1],
   },
   {
     id: "manjeera-farms",
@@ -110,6 +109,7 @@ export const posts = [
     shareable: true,
     author: "Ramesh",
     personId: "ramesh",
+    farmId: "bjr-farms",
     context: "Mango farmer · Nalgonda",
     time: "2h",
     text: "Good flowering this week. The trees that were pruned after harvest are looking noticeably better.",

@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SocialPeopleContext } from "./SocialPeopleContext";
 import { farms } from "./mockSocialData";
 import FarmProfile from "./FarmProfile";
 import "./Explore.css";
@@ -7,18 +8,14 @@ import "./FarmsExplore.css";
 function FarmsExplore({ onBack }) {
   const [query, setQuery] = useState("");
   const [selectedFarm, setSelectedFarm] = useState(null);
-  const [following, setFollowing] = useState({});
-
-  function toggleFollow(farmId) {
-    setFollowing((current) => ({ ...current, [farmId]: !current[farmId] }));
-  }
+  const { followedFarmIds, toggleFarmFollow } = useContext(SocialPeopleContext);
 
   if (selectedFarm) {
     return (
       <FarmProfile
         farm={selectedFarm}
-        following={Boolean(following[selectedFarm.id])}
-        onToggleFollow={() => toggleFollow(selectedFarm.id)}
+        following={followedFarmIds.includes(selectedFarm.id)}
+        onToggleFollow={() => toggleFarmFollow(selectedFarm.id)}
         onBack={() => setSelectedFarm(null)}
       />
     );
@@ -53,21 +50,10 @@ function FarmsExplore({ onBack }) {
           <li className="farms-discovery-card" key={farm.id}>
             <div className="farms-discovery-heading">
               <h2>
-                {farm.id === "bjr-farms" ? (
-                  <button type="button" onClick={() => setSelectedFarm(farm)}>
-                    {farm.name} <span aria-hidden="true">›</span>
-                  </button>
-                ) : farm.name}
+                <button type="button" onClick={() => setSelectedFarm(farm)}>
+                  {farm.name} <span aria-hidden="true">›</span>
+                </button>
               </h2>
-              <button
-                className="farms-follow-button"
-                type="button"
-                aria-label={`${following[farm.id] ? "Unfollow" : "Follow"} ${farm.name}`}
-                aria-pressed={Boolean(following[farm.id])}
-                onClick={() => toggleFollow(farm.id)}
-              >
-                {following[farm.id] ? "Following" : "Follow"}
-              </button>
             </div>
             <p className="farms-location">{farm.location}</p>
             <ul className="farms-crop-labels" aria-label={`${farm.name} crops`}>

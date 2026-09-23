@@ -7,7 +7,8 @@ import { posts } from "./mockSocialData";
 function HomeFeed({ conversationTarget, feedTab = "for-you", onChangeTab }) {
   const socialPeople = useContext(SocialPeopleContext);
   const visiblePosts = feedTab === "following"
-    ? posts.filter((post) => socialPeople?.followedPersonIds.includes(post.personId))
+    ? posts.filter((post) => socialPeople?.followedPersonIds.includes(post.personId)
+      || socialPeople?.followedFarmIds.includes(post.farmId))
     : posts;
   return (
     <div className="social-home">
@@ -18,7 +19,7 @@ function HomeFeed({ conversationTarget, feedTab = "for-you", onChangeTab }) {
       </div>
 
       <div className="feed">
-        {visiblePosts.length === 0 && <p className="following-empty" role="status">Posts from people you follow will appear here.</p>}
+        {visiblePosts.length === 0 && <p className="following-empty" role="status">Posts from people and farms you follow will appear here.</p>}
         {visiblePosts.map((post) => (
           <PostCard key={post.id} post={post} conversationTarget={conversationTarget?.postId === post.id ? conversationTarget : null} />
         ))}
