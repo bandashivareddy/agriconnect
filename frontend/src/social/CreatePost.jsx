@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { farms, posts } from "./mockSocialData";
+import { normalizePublicContext } from "./publicPostContext";
 import "./CreatePost.css";
 
 const crops = [...new Set([
@@ -10,11 +11,12 @@ const crops = [...new Set([
   ...farms.flatMap((farm) => farm.crops),
 ])];
 
-function CreatePost({ user, onClose, onPost }) {
+// Initial context is a snapshot for this composer mount; edits remain local.
+function CreatePost({ user, onClose, onPost, initialContext }) {
   const dialog = useRef(null);
   const [text, setText] = useState("");
-  const [crop, setCrop] = useState("");
-  const [farmId, setFarmId] = useState("");
+  const [crop, setCrop] = useState(() => normalizePublicContext(initialContext).crop);
+  const [farm, setFarm] = useState(() => normalizePublicContext(initialContext).farm);
   const [context, setContext] = useState(null);
   const [question, setQuestion] = useState(false);
   const [mediaNotice, setMediaNotice] = useState(false);
@@ -33,16 +35,18 @@ function CreatePost({ user, onClose, onPost }) {
   function submit(event) {
     event.preventDefault();
     if (!text.trim() || submitted.current) return;
-    const cropKey = crop.toLowerCase();
-    const existingCrop = posts.find((post) => post.cropKey === cropKey);
+    const publicContext = normalizePublicContext({ farm, crop });
     const post = {
       id: crypto.randomUUID(),
       personId: authorPerson.id,
       author: authorPerson.name,
       time: "Just now",
       text: text.trim(),
-      ...(farmId ? { farmId } : {}),
-      ...(crop ? { cropKey, crop: existingCrop?.crop || crop } : {}),
+      ...(publicContext.farm || publicContext.crop ? { publicContext } : {}),
+      // Keep existing mock Following/crop consumers compatible. Canonical IDs
+      // must never be placed in these mock identity fields.
+      ...(publicContext.farm?.socialFarmId ? { farmId: publicContext.farm.socialFarmId } : {}),
+      ...(publicContext.crop?.socialCropKey ? { cropKey: publicContext.crop.socialCropKey, crop: publicContext.crop.name } : {}),
       ...(question ? { question: true } : {}),
     };
     submitted.current = true;
@@ -80,13 +84,13 @@ function CreatePost({ user, onClose, onPost }) {
           <p className="create-post-context-label">Add context <span>(optional)</span></p>
           <div className="create-post-context" aria-label="Optional context">
             <button type="button" aria-expanded={context === "crop"} onClick={() => setContext(context === "crop" ? null : "crop")}>
-              {crop ? `Crop: ${crop}` : "Add crop"}
+              {crop ? `Crop: ${crops.find((name) => name.toLowerCase() === crop.socialCropKey) || crop.name}` : "Add crop"}
             </button>
-            {crop && <button type="button" aria-label="Remove crop" onClick={() => setCrop("")}>×</button>}
+            {crop && <button type="button" aria-label="Remove crop" onClick={() => setCrop(undefined)}>×</button>}
             <button type="button" aria-expanded={context === "farm"} onClick={() => setContext(context === "farm" ? null : "farm")}>
-              {farmId ? `Farm: ${farms.find((farm) => farm.id === farmId).name}` : "Add farm"}
+              {farm ? `Farm: ${farm.name}` : "Add farm"}
             </button>
-            {farmId && <button type="button" aria-label="Remove farm" onClick={() => setFarmId("")}>×</button>}
+            {farm && <button type="button" aria-label="Remove farm" onClick={() => setFarm(undefined)}>×</button>}
             <button type="button" aria-pressed={question} onClick={() => setQuestion(!question)}>
               {question ? "✓ Ask as a question" : "Ask as a question"}
             </button>
@@ -94,17 +98,19 @@ function CreatePost({ user, onClose, onPost }) {
           {context === "crop" && (
             <label className="create-post-picker">
               Add a crop, if you like
-              <select value={crop} onChange={(event) => { setCrop(event.target.value); setContext(null); }}>
+              <select value={crop?.canonicalCropId ? `canonical:${crop.canonicalCropId}` : crop?.socialCropKey || ""} onChange={(event) => { if (!event.target.value.startsWith("canonical:")) setCrop(normalizePublicContext({ crop: { socialCropKey: event.target.value } }).crop); setContext(null); }}>
                 <option value="">No crop</option>
-                {crops.map((name) => <option key={name} value={name}>{name}</option>)}
+                {crop?.canonicalCropId && <option value={`canonical:${crop.canonicalCropId}`}>{crop.name}</option>}
+                {crops.map((name) => <option key={name} value={name.toLowerCase()}>{name}</option>)}
               </select>
             </label>
           )}
           {context === "farm" && (
             <label className="create-post-picker">
               Add a farm, if you like
-              <select value={farmId} onChange={(event) => { setFarmId(event.target.value); setContext(null); }}>
+              <select value={farm?.canonicalFarmId ? `canonical:${farm.canonicalFarmId}` : farm?.socialFarmId || ""} onChange={(event) => { if (!event.target.value.startsWith("canonical:")) setFarm(normalizePublicContext({ farm: { socialFarmId: event.target.value } }).farm); setContext(null); }}>
                 <option value="">No farm</option>
+                {farm?.canonicalFarmId && <option value={`canonical:${farm.canonicalFarmId}`}>{farm.name}</option>}
                 {farms.map((farm) => <option key={farm.id} value={farm.id}>{farm.name}</option>)}
               </select>
             </label>

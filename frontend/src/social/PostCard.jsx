@@ -1,13 +1,18 @@
 import { useContext, useEffect, useId, useRef, useState } from "react";
 import { SocialPeopleContext } from "./SocialPeopleContext";
 import { people, farms } from "./mockSocialData";
+import { normalizePublicContext } from "./publicPostContext";
 import "./PostCard.css";
 
 function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversationTarget, authorPerson }) {
   const socialPeople = useContext(SocialPeopleContext);
   const profilePerson = people.find((entry) => entry.id === post.personId);
   const person = profilePerson || (authorPerson?.id === post.personId ? authorPerson : null);
-  const farm = person && farms.find((entry) => entry.id === post.farmId);
+  const publicContext = normalizePublicContext(post.publicContext);
+  const legacyFarm = person && farms.find((entry) => entry.id === post.farmId);
+  const farm = publicContext.farm || legacyFarm;
+  const farmProfileId = publicContext.farm ? publicContext.farm.socialFarmId : legacyFarm?.id;
+  const cropLabel = publicContext.crop?.name || post.crop;
   const authorName = person?.name || post.author;
   const hasPersonProfile = socialPeople && profilePerson;
   const commentsId = useId();
@@ -88,8 +93,8 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversat
             {farm && (
               <>
                 {" "}<span className="post-attribution-at">at</span>{" "}
-                {socialPeople?.openFarm ? (
-                  <button className="post-farm-link" type="button" onClick={() => socialPeople.openFarm(farm.id)}>{farm.name}</button>
+                {farmProfileId && socialPeople?.openFarm ? (
+                  <button className="post-farm-link" type="button" onClick={() => socialPeople.openFarm(farmProfileId)}>{farm.name}</button>
                 ) : <span className="post-farm-name">{farm.name}</span>}
               </>
             )}
@@ -108,8 +113,8 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversat
 
       <p className="post-text">{post.text}</p>
 
-      {typeof post.crop === "string" && post.crop.trim() && (
-        <div className="crop-chip">{post.crop}</div>
+      {typeof cropLabel === "string" && cropLabel.trim() && (
+        <div className="crop-chip">{cropLabel}</div>
       )}
     
       {post.image ? (
