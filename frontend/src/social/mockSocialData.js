@@ -1,6 +1,8 @@
 import mangoFlowering from "../assets/social/mango-flowering.jpeg";
 import bhendiLeaf from "../assets/social/bhendi-leaf.jpeg";
 import bullockCartMorning from "../assets/social/bullock-cart-morning.png";
+import paddyPlanting from "../assets/social/paddy-planting.png";
+import chilliHarvest from "../assets/social/chilli-harvest.png";
 
 export const farms = [
   {
@@ -98,6 +100,19 @@ export const posts = [
     imageAlt: "Mango flowering",
   },
   {
+    id: 5,
+    author: "Raju",
+    context: "Paddy farmer · Suryapet, Telangana",
+    time: "3h",
+    text: "Planting started today 🌱",
+    crop: "🌾 Paddy",
+    cropKey: "paddy",
+    useful: 21,
+    comments: 4,
+    image: paddyPlanting,
+    imageAlt: "Paddy transplantation work in a field",
+  },
+  {
     id: 2,
     author: "Srinivas",
     context: "Bhendi grower · Nalgonda",
@@ -121,5 +136,7 @@ export const posts = [
     cropKey: "chilli",
     useful: 57,
     comments: 11,
+    image: chilliHarvest,
+    imageAlt: "Chilli harvest",
   },
 ];
