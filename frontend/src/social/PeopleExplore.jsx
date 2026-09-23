@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { SocialPeopleContext } from "./SocialPeopleContext";
 import { people } from "./mockSocialData";
 import PersonProfile from "./PersonProfile";
 import "./Explore.css";
@@ -7,17 +8,13 @@ import "./PeopleExplore.css";
 function PeopleExplore({ onBack }) {
   const [query, setQuery] = useState("");
   const [selectedPerson, setSelectedPerson] = useState(null);
-  const [following, setFollowing] = useState({});
-
-  function toggleFollow(personId) {
-    setFollowing((current) => ({ ...current, [personId]: !current[personId] }));
-  }
+  const { followedPersonIds, toggleFollow } = useContext(SocialPeopleContext);
 
   if (selectedPerson) {
     return (
       <PersonProfile
         person={selectedPerson}
-        following={Boolean(following[selectedPerson.id])}
+        following={followedPersonIds.includes(selectedPerson.id)}
         onToggleFollow={() => toggleFollow(selectedPerson.id)}
         onBack={() => setSelectedPerson(null)}
       />
@@ -53,20 +50,18 @@ function PeopleExplore({ onBack }) {
             <div className="people-discovery-heading">
               <div className="people-avatar" aria-hidden="true">{person.name.charAt(0)}</div>
               <h2>
-                {person.id === "ramesh" ? (
                   <button type="button" onClick={() => setSelectedPerson(person)}>
                     {person.name} <span aria-hidden="true">›</span>
                   </button>
-                ) : person.name}
               </h2>
               <button
                 className="people-follow"
                 type="button"
-                aria-label={`${following[person.id] ? "Unfollow" : "Follow"} ${person.name}`}
-                aria-pressed={Boolean(following[person.id])}
+                aria-label={`${followedPersonIds.includes(person.id) ? "Unfollow" : "Follow"} ${person.name}`}
+                aria-pressed={followedPersonIds.includes(person.id)}
                 onClick={() => toggleFollow(person.id)}
               >
-                {following[person.id] ? "Following" : "Follow"}
+                {followedPersonIds.includes(person.id) ? "Following" : "Follow"}
               </button>
             </div>
             <p className="people-identity">{person.identity}</p>

@@ -38,6 +38,13 @@ export const farms = [
 
 export const people = [
   {
+    id: "suresh",
+    name: "Suresh",
+    identity: "Nalgonda, Telangana",
+    bio: "Sharing everyday moments and memories from back home.",
+    interests: ["Village life", "Home"],
+  },
+  {
     id: "ramesh",
     name: "Ramesh",
     identity: "Mango farmer · Nalgonda",
@@ -79,6 +86,7 @@ export const posts = [
     id: 4,
     shareable: true,
     author: "Suresh",
+    personId: "suresh",
     context: "Nalgonda, Telangana",
     time: "1h",
     text: "Mornings back home ❤️",
@@ -101,6 +109,7 @@ export const posts = [
     id: 1,
     shareable: true,
     author: "Ramesh",
+    personId: "ramesh",
     context: "Mango farmer · Nalgonda",
     time: "2h",
     text: "Good flowering this week. The trees that were pruned after harvest are looking noticeably better.",
@@ -127,6 +136,7 @@ export const posts = [
     id: 2,
     shareable: true,
     author: "Srinivas",
+    personId: "srinivas",
     context: "Bhendi grower · Nalgonda",
     time: "4h",
     text: "Some of my bhendi leaves are getting damaged like this. Has anyone seen this before? What could be causing it?",

@@ -3,12 +3,12 @@ import PostCard from "./PostCard";
 import "./Explore.css";
 import "./PersonProfile.css";
 
-function PersonProfile({ person, following, onToggleFollow, onBack }) {
-  const publicPosts = posts.filter((post) => post.author === person.name);
+function PersonProfile({ person, following, onToggleFollow, onBack, backLabel = "People" }) {
+  const publicPosts = posts.filter((post) => post.personId === person.id);
 
   return (
     <section className="person-profile">
-      <button className="explore-back" type="button" onClick={onBack}>← People</button>
+      <button className="explore-back" type="button" onClick={onBack}>← {backLabel}</button>
       <header className="person-profile-header">
         <div className="person-profile-heading">
           <div className="person-profile-avatar" aria-hidden="true">{person.name.charAt(0)}</div>
@@ -20,7 +20,7 @@ function PersonProfile({ person, following, onToggleFollow, onBack }) {
             aria-pressed={following}
             onClick={onToggleFollow}
           >
-            {following ? "Following" : "Follow"}
+            <span>{following ? "Following ✓" : "Follow"}</span>
           </button>
         </div>
         <p className="person-profile-identity">{person.identity}</p>

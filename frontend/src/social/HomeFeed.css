@@ -47,6 +47,14 @@
   padding-top: 8px;
 }
 
+.following-empty {
+  padding: 16px;
+  margin: 0;
+  color: #687267;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 @media (min-width: 621px) {
 .social-home {
     border-left: 1px solid #e2e5df;

@@ -2,7 +2,9 @@ import { useState } from "react";
 import HomeFeed from "./HomeFeed";
 import Explore from "./Explore";
 import CreatePost from "./CreatePost";
-import { notifications as mockNotifications } from "./mockSocialData";
+import PersonProfile from "./PersonProfile";
+import { SocialPeopleContext } from "./SocialPeopleContext";
+import { people, notifications as mockNotifications } from "./mockSocialData";
 import "./SocialShell.css";
 
 function SocialShell({ user }) {
@@ -10,14 +12,30 @@ function SocialShell({ user }) {
   const [creating, setCreating] = useState(false);
   const [notifications, setNotifications] = useState(mockNotifications);
   const [conversationTarget, setConversationTarget] = useState(null);
+  const [followedPersonIds, setFollowedPersonIds] = useState(["ramesh"]);
+  const [selectedPerson, setSelectedPerson] = useState(null);
+  const [feedTab, setFeedTab] = useState("for-you");
+
+  function toggleFollow(personId) {
+    setFollowedPersonIds((ids) => ids.includes(personId)
+      ? ids.filter((id) => id !== personId)
+      : [...ids, personId]);
+  }
+
+  function openPerson(personId) {
+    const person = people.find((entry) => entry.id === personId);
+    if (person) setSelectedPerson(person);
+  }
   const unreadCount = notifications.filter((item) => !item.read).length;
 
   function openNotifications() {
+    setSelectedPerson(null);
     setSection("notifications");
     setNotifications((items) => items.map((item) => ({ ...item, read: true })));
   }
 
   return (
+    <SocialPeopleContext.Provider value={{ followedPersonIds, toggleFollow, openPerson }}>
     <div className="social-shell">
       <header className="social-topbar">
         <div className="social-brand">AgriConnect</div>
@@ -34,11 +52,14 @@ function SocialShell({ user }) {
       </header>
 
       <main className="social-content">
-        <div hidden={section !== "home"}>
-          <HomeFeed conversationTarget={conversationTarget} />
+        <div hidden={section !== "home" || Boolean(selectedPerson)}>
+          <HomeFeed conversationTarget={conversationTarget} feedTab={feedTab} onChangeTab={setFeedTab} />
         </div>
-        {section === "explore" && <Explore />}
-        {section === "notifications" && (
+        {section === "explore" && <div hidden={Boolean(selectedPerson)}><Explore /></div>}
+        {selectedPerson && (
+          <PersonProfile person={selectedPerson} following={followedPersonIds.includes(selectedPerson.id)} onToggleFollow={() => toggleFollow(selectedPerson.id)} onBack={() => setSelectedPerson(null)} backLabel="Back" />
+        )}
+        {section === "notifications" && !selectedPerson && (
           <section className="social-notifications" aria-labelledby="social-notifications-title">
             <h1 id="social-notifications-title">Notifications</h1>
             <ul>
@@ -46,6 +67,7 @@ function SocialShell({ user }) {
                 <li key={item.id}>
                   <button type="button" onClick={() => {
                     setConversationTarget({ postId: item.postId, commentId: item.commentId });
+                    setFeedTab("for-you");
                     setSection("home");
                   }}>
                     <span className="social-notification-avatar" aria-hidden="true">{item.author.slice(0, 1)}</span>
@@ -65,7 +87,7 @@ function SocialShell({ user }) {
         <button
           className={`social-nav-item ${section === "home" ? "active" : ""}`}
           type="button"
-          onClick={() => setSection("home")}
+          onClick={() => { setSelectedPerson(null); setSection("home"); }}
         >
           <span>⌂</span>
           <small>Home</small>
@@ -74,7 +96,7 @@ function SocialShell({ user }) {
         <button
           className={`social-nav-item ${section === "explore" ? "active" : ""}`}
           type="button"
-          onClick={() => setSection("explore")}
+          onClick={() => { setSelectedPerson(null); setSection("explore"); }}
         >
           <span>⌕</span>
           <small>Explore</small>
@@ -103,6 +125,7 @@ function SocialShell({ user }) {
       </nav>
       {creating && <CreatePost onClose={() => setCreating(false)} />}
     </div>
+    </SocialPeopleContext.Provider>
   );
 }
 

@@ -1,7 +1,11 @@
-import { useEffect, useId, useRef, useState } from "react";
+import { useContext, useEffect, useId, useRef, useState } from "react";
+import { SocialPeopleContext } from "./SocialPeopleContext";
+import { people } from "./mockSocialData";
 import "./PostCard.css";
 
 function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversationTarget }) {
+  const socialPeople = useContext(SocialPeopleContext);
+  const hasPersonProfile = socialPeople && people.some((person) => person.id === post.personId);
   const commentsId = useId();
   const [loved, setLoved] = useState(false);
   const [manuallyOpen, setCommentsOpen] = useState(false);
@@ -73,7 +77,9 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversat
         </div>
 
         <div className="post-author">
-          <strong>{post.author}</strong>
+          {hasPersonProfile ? (
+            <button className="post-person-link" type="button" onClick={() => socialPeople.openPerson(post.personId)}>{post.author}</button>
+          ) : <strong>{post.author}</strong>}
           <span>{post.context} · {post.time}</span>
         </div>
 
