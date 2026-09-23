@@ -4,14 +4,14 @@ import PostCard from "./PostCard";
 import "./Explore.css";
 import "./FarmProfile.css";
 
-function FarmProfile({ farm, following, onToggleFollow, onBack }) {
+function FarmProfile({ farm, following, onToggleFollow, onBack, backLabel = "Farms" }) {
   const [tab, setTab] = useState("updates");
   const updates = posts.filter((post) => post.farmId === farm.id);
 
   return (
     <section className="farm-profile">
       <button className="explore-back" type="button" onClick={onBack}>
-        ← Farms
+        ← {backLabel}
       </button>
       <header className="farm-profile-header">
         <div className="farm-profile-avatar" aria-hidden="true">🌱</div>

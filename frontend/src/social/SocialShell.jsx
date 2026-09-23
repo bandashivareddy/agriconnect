@@ -3,8 +3,9 @@ import HomeFeed from "./HomeFeed";
 import Explore from "./Explore";
 import CreatePost from "./CreatePost";
 import PersonProfile from "./PersonProfile";
+import FarmProfile from "./FarmProfile";
 import { SocialPeopleContext } from "./SocialPeopleContext";
-import { people, notifications as mockNotifications } from "./mockSocialData";
+import { people, farms, notifications as mockNotifications } from "./mockSocialData";
 import "./SocialShell.css";
 
 function SocialShell({ user }) {
@@ -15,6 +16,7 @@ function SocialShell({ user }) {
   const [followedPersonIds, setFollowedPersonIds] = useState(["ramesh"]);
   const [followedFarmIds, setFollowedFarmIds] = useState([]);
   const [selectedPerson, setSelectedPerson] = useState(null);
+  const [selectedFarm, setSelectedFarm] = useState(null);
   const [feedTab, setFeedTab] = useState("for-you");
 
   function toggleFollow(personId) {
@@ -31,18 +33,27 @@ function SocialShell({ user }) {
 
   function openPerson(personId) {
     const person = people.find((entry) => entry.id === personId);
-    if (person) setSelectedPerson(person);
+    if (person) {
+      setSelectedFarm(null);
+      setSelectedPerson(person);
+    }
+  }
+
+  function openFarm(farmId) {
+    const farm = farms.find((entry) => entry.id === farmId);
+    if (farm) setSelectedFarm(farm);
   }
   const unreadCount = notifications.filter((item) => !item.read).length;
 
   function openNotifications() {
+    setSelectedFarm(null);
     setSelectedPerson(null);
     setSection("notifications");
     setNotifications((items) => items.map((item) => ({ ...item, read: true })));
   }
 
   return (
-    <SocialPeopleContext.Provider value={{ followedPersonIds, toggleFollow, openPerson, followedFarmIds, toggleFarmFollow }}>
+    <SocialPeopleContext.Provider value={{ followedPersonIds, toggleFollow, openPerson, followedFarmIds, toggleFarmFollow, openFarm }}>
     <div className="social-shell">
       <header className="social-topbar">
         <div className="social-brand">AgriConnect</div>
@@ -59,14 +70,17 @@ function SocialShell({ user }) {
       </header>
 
       <main className="social-content">
-        <div hidden={section !== "home" || Boolean(selectedPerson)}>
+        <div hidden={section !== "home" || Boolean(selectedPerson || selectedFarm)}>
           <HomeFeed conversationTarget={conversationTarget} feedTab={feedTab} onChangeTab={setFeedTab} />
         </div>
-        {section === "explore" && <div hidden={Boolean(selectedPerson)}><Explore /></div>}
-        {selectedPerson && (
+        {section === "explore" && <div hidden={Boolean(selectedPerson || selectedFarm)}><Explore /></div>}
+        {selectedPerson && !selectedFarm && (
           <PersonProfile person={selectedPerson} following={followedPersonIds.includes(selectedPerson.id)} onToggleFollow={() => toggleFollow(selectedPerson.id)} onBack={() => setSelectedPerson(null)} backLabel="Back" />
         )}
-        {section === "notifications" && !selectedPerson && (
+        {selectedFarm && (
+          <FarmProfile farm={selectedFarm} following={followedFarmIds.includes(selectedFarm.id)} onToggleFollow={() => toggleFarmFollow(selectedFarm.id)} onBack={() => setSelectedFarm(null)} backLabel="Back" />
+        )}
+        {section === "notifications" && !selectedPerson && !selectedFarm && (
           <section className="social-notifications" aria-labelledby="social-notifications-title">
             <h1 id="social-notifications-title">Notifications</h1>
             <ul>
@@ -94,7 +108,7 @@ function SocialShell({ user }) {
         <button
           className={`social-nav-item ${section === "home" ? "active" : ""}`}
           type="button"
-          onClick={() => { setSelectedPerson(null); setSection("home"); }}
+          onClick={() => { setSelectedFarm(null); setSelectedPerson(null); setSection("home"); }}
         >
           <span>⌂</span>
           <small>Home</small>
@@ -103,7 +117,7 @@ function SocialShell({ user }) {
         <button
           className={`social-nav-item ${section === "explore" ? "active" : ""}`}
           type="button"
-          onClick={() => { setSelectedPerson(null); setSection("explore"); }}
+          onClick={() => { setSelectedFarm(null); setSelectedPerson(null); setSection("explore"); }}
         >
           <span>⌕</span>
           <small>Explore</small>

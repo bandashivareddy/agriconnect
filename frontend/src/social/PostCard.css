@@ -42,7 +42,8 @@
   font-size: 15px;
 }
 
-.post-person-link {
+.post-person-link,
+.post-farm-link {
   align-self: flex-start;
   padding: 0;
   border: 0;
@@ -58,6 +59,35 @@
 .post-author span {
   color: #747b73;
   font-size: 12px;
+}
+
+.post-attribution {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 2px 5px;
+  overflow-wrap: anywhere;
+}
+
+.post-attribution button {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+.post-attribution .post-attribution-at {
+  font-size: 14px;
+}
+
+.post-attribution .post-farm-link,
+.post-attribution .post-farm-name {
+  color: #526052;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.post-attribution button:focus-visible {
+  outline: 2px solid #61795b;
+  outline-offset: 2px;
 }
 
 .post-more {

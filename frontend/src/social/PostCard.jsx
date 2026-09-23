@@ -1,11 +1,14 @@
 import { useContext, useEffect, useId, useRef, useState } from "react";
 import { SocialPeopleContext } from "./SocialPeopleContext";
-import { people } from "./mockSocialData";
+import { people, farms } from "./mockSocialData";
 import "./PostCard.css";
 
 function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversationTarget }) {
   const socialPeople = useContext(SocialPeopleContext);
-  const hasPersonProfile = socialPeople && people.some((person) => person.id === post.personId);
+  const person = people.find((entry) => entry.id === post.personId);
+  const farm = person && farms.find((entry) => entry.id === post.farmId);
+  const authorName = person?.name || post.author;
+  const hasPersonProfile = socialPeople && person;
   const commentsId = useId();
   const [loved, setLoved] = useState(false);
   const [manuallyOpen, setCommentsOpen] = useState(false);
@@ -73,13 +76,23 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversat
     <article className="feed-card">
       <div className="post-header">
         <div className="avatar">
-          {post.author.charAt(0)}
+          {authorName.charAt(0)}
         </div>
 
         <div className="post-author">
-          {hasPersonProfile ? (
-            <button className="post-person-link" type="button" onClick={() => socialPeople.openPerson(post.personId)}>{post.author}</button>
-          ) : <strong>{post.author}</strong>}
+          <div className="post-attribution">
+            {hasPersonProfile ? (
+              <button className="post-person-link" type="button" onClick={() => socialPeople.openPerson(person.id)}>{authorName}</button>
+            ) : <strong>{authorName}</strong>}
+            {farm && (
+              <>
+                {" "}<span className="post-attribution-at">at</span>{" "}
+                {socialPeople?.openFarm ? (
+                  <button className="post-farm-link" type="button" onClick={() => socialPeople.openFarm(farm.id)}>{farm.name}</button>
+                ) : <span className="post-farm-name">{farm.name}</span>}
+              </>
+            )}
+          </div>
           <span>{post.context} · {post.time}</span>
         </div>
 
