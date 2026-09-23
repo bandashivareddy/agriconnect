@@ -158,6 +158,16 @@
   padding: 4px 0 12px;
 }
 
+.post-share-feedback {
+  margin: 0;
+  color: #596057;
+  font-size: 12px;
+}
+
+.post-share-feedback:not(:empty) {
+  padding-bottom: 8px;
+}
+
 .post-comment-list {
   list-style: none;
   margin: 0;

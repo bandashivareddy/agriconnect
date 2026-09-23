@@ -12,7 +12,37 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversat
   const [replyTo, setReplyTo] = useState(null);
   const [comments, setComments] = useState(() => Array.isArray(post.comments) ? post.comments : []);
   const [draft, setDraft] = useState("");
+  const [shareFeedback, setShareFeedback] = useState("");
+  const sharePending = useRef(false);
+  const shareFeedbackTimer = useRef(null);
   const loveCount = (Number.isFinite(post.loves) ? Math.max(0, post.loves) : 0) + Number(loved);
+
+  useEffect(() => () => clearTimeout(shareFeedbackTimer.current), []);
+
+  async function sharePost() {
+    if (post.shareable !== true || sharePending.current) return;
+    sharePending.current = true;
+    clearTimeout(shareFeedbackTimer.current);
+    setShareFeedback("");
+    const text = `${post.author} on AgriConnect:\n${post.text}`;
+    try {
+      if (typeof navigator.share === "function") {
+        try {
+          await navigator.share({ text });
+          return;
+        } catch (error) {
+          if (error?.name === "AbortError") return;
+        }
+      }
+      await navigator.clipboard.writeText(text);
+      setShareFeedback("Copied");
+    } catch {
+      setShareFeedback("Couldn’t copy. Please try again.");
+    } finally {
+      sharePending.current = false;
+      shareFeedbackTimer.current = setTimeout(() => setShareFeedback(""), 3000);
+    }
+  }
 
   useEffect(() => {
     if (!conversationTarget) return;
@@ -87,7 +117,15 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversat
           </svg>
           <span className="post-action-count">{comments.length}</span>
         </button>
+        {post.shareable === true && (
+          <button type="button" aria-label="Share post" onClick={sharePost}>
+            <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+              <path d="M12 15V3m-4 4 4-4 4 4M5 12v8a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-8" />
+            </svg>
+          </button>
+        )}
       </div>
+      {post.shareable === true && <p className="post-share-feedback" role="status">{shareFeedback}</p>}
       <section ref={conversationRef} tabIndex={-1} id={commentsId} className="post-comments" aria-label={`Comments on ${post.author}'s post`} hidden={!commentsOpen}>
         <ul className="post-comment-list" aria-live="polite" aria-relevant="additions">
           {comments.map((comment, index) => (

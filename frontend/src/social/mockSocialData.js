@@ -77,6 +77,7 @@ export const people = [
 export const posts = [
   {
     id: 4,
+    shareable: true,
     author: "Suresh",
     context: "Nalgonda, Telangana",
     time: "1h",
@@ -98,6 +99,7 @@ export const posts = [
   },
   {
     id: 1,
+    shareable: true,
     author: "Ramesh",
     context: "Mango farmer · Nalgonda",
     time: "2h",
@@ -110,6 +112,7 @@ export const posts = [
   },
   {
     id: 5,
+    shareable: true,
     author: "Raju",
     context: "Paddy farmer · Suryapet, Telangana",
     time: "3h",
@@ -122,6 +125,7 @@ export const posts = [
   },
   {
     id: 2,
+    shareable: true,
     author: "Srinivas",
     context: "Bhendi grower · Nalgonda",
     time: "4h",
@@ -135,6 +139,7 @@ export const posts = [
   },
   {
     id: 3,
+    shareable: true,
     author: "Lakshmi",
     context: "Farm update · Warangal",
     time: "6h",
