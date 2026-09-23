@@ -175,6 +175,46 @@
   font-weight: 600;
 }
 
+.post-reply-action,
+.post-reply-context button {
+  border: 0;
+  background: transparent;
+  color: #596057;
+  cursor: pointer;
+  min-height: 36px;
+  padding: 4px 8px;
+  font: inherit;
+  font-size: 12px;
+}
+
+.post-reply-action {
+  padding-left: 0;
+  min-width: 44px;
+  min-height: 44px;
+  text-align: left;
+  color: #70776c;
+  font-weight: 400;
+}
+
+.post-replies {
+  list-style: none;
+  padding-left: 26px;
+  margin: 2px 0 0;
+}
+
+.post-reply-context {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #596057;
+  font-size: 12px;
+}
+
+.post-comments,
+.post-comment-list li {
+  scroll-margin-top: 72px;
+}
+
 .post-comment-list p {
   margin: 2px 0 0;
   color: #596057;

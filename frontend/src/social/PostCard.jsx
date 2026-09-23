@@ -1,20 +1,38 @@
-import { useId, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import "./PostCard.css";
 
-function PostCard({ post, showMediaPlaceholder = true, moreButtonType }) {
+function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversationTarget }) {
   const commentsId = useId();
   const [loved, setLoved] = useState(false);
-  const [commentsOpen, setCommentsOpen] = useState(false);
+  const [manuallyOpen, setCommentsOpen] = useState(false);
+  const [dismissedTarget, setDismissedTarget] = useState(null);
+  const commentsOpen = manuallyOpen || Boolean(conversationTarget && dismissedTarget !== conversationTarget);
+  const conversationRef = useRef(null);
+  const targetCommentRef = useRef(null);
+  const [replyTo, setReplyTo] = useState(null);
   const [comments, setComments] = useState(() => Array.isArray(post.comments) ? post.comments : []);
   const [draft, setDraft] = useState("");
   const loveCount = (Number.isFinite(post.loves) ? Math.max(0, post.loves) : 0) + Number(loved);
+
+  useEffect(() => {
+    if (!conversationTarget) return;
+    const target = targetCommentRef.current || conversationRef.current;
+    target?.focus({ preventScroll: true });
+    target?.scrollIntoView({ block: "center", behavior: "instant" });
+  }, [conversationTarget]);
 
   function addComment(event) {
     event.preventDefault();
     const text = draft.trim();
     if (!text) return;
-    setComments((current) => [...current, { author: "You", text }]);
+    const entry = { id: crypto.randomUUID(), author: "You", text };
+    setComments((current) => replyTo === null
+      ? [...current, entry]
+      : current.map((comment, index) => index === replyTo
+        ? { ...comment, replies: [...(comment.replies || []), entry] }
+        : comment));
     setDraft("");
+    setReplyTo(null);
   }
 
   return (
@@ -63,24 +81,41 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType }) {
           </svg>
           <span className="post-action-count">{loveCount}</span>
         </button>
-        <button type="button" aria-label={`Comments, ${comments.length}`} aria-expanded={commentsOpen} aria-controls={commentsId} onClick={() => setCommentsOpen((current) => !current)}>
+        <button type="button" aria-label={`Comments, ${comments.length}`} aria-expanded={commentsOpen} aria-controls={commentsId} onClick={() => { setCommentsOpen(!commentsOpen); setDismissedTarget(conversationTarget); }}>
           <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
             <path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5H4l-2 2V11.5a9.5 9.5 0 0 1 19 0Z" />
           </svg>
           <span className="post-action-count">{comments.length}</span>
         </button>
       </div>
-      <section id={commentsId} className="post-comments" aria-label={`Comments on ${post.author}'s post`} hidden={!commentsOpen}>
+      <section ref={conversationRef} tabIndex={-1} id={commentsId} className="post-comments" aria-label={`Comments on ${post.author}'s post`} hidden={!commentsOpen}>
         <ul className="post-comment-list" aria-live="polite" aria-relevant="additions">
           {comments.map((comment, index) => (
-            <li key={index}>
+            <li key={comment.id || index} ref={conversationTarget?.commentId === comment.id ? targetCommentRef : null} tabIndex={-1}>
               <strong>{comment.author}</strong>
               <p>{comment.text}</p>
+              <button className="post-reply-action" type="button" onClick={() => setReplyTo(index)}>Reply</button>
+              {comment.replies?.length > 0 && (
+                <ul className="post-replies">
+                  {comment.replies.map((reply, replyIndex) => (
+                    <li key={reply.id || replyIndex}>
+                      <strong>{reply.author}</strong>
+                      <p>{reply.text}</p>
+                    </li>
+                  ))}
+                </ul>
+              )}
             </li>
           ))}
         </ul>
+        {replyTo !== null && (
+          <div className="post-reply-context">
+            <span>Replying to {comments[replyTo].author}</span>
+            <button type="button" aria-label="Cancel reply" onClick={() => setReplyTo(null)}>×</button>
+          </div>
+        )}
         <form className="post-comment-form" onSubmit={addComment}>
-          <input aria-label="Add a comment" placeholder="Add a comment…" value={draft} onChange={(event) => setDraft(event.target.value)} />
+          <input aria-label={replyTo === null ? "Add a comment" : `Reply to ${comments[replyTo].author}`} placeholder={replyTo === null ? "Add a comment…" : `Reply to ${comments[replyTo].author}…`} value={draft} onChange={(event) => setDraft(event.target.value)} />
           <button type="submit" aria-label="Send comment" disabled={!draft.trim()}>
             <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
               <path d="m21 3-7 18-4-7-7-4 18-7Z M10 14 21 3" />

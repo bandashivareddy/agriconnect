@@ -39,6 +39,97 @@
 .notification-button {
   font-size: 20px;
   padding: 8px;
+  position: relative;
+}
+
+.social-unread-dot {
+  position: absolute;
+  top: 7px;
+  right: 6px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #61795b;
+}
+
+.social-notifications {
+  max-width: 620px;
+  margin: 0 auto;
+  padding: 20px 16px;
+}
+
+.social-notifications h1 {
+  margin: 0 0 10px;
+  font-size: 20px;
+}
+
+.social-notifications ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.social-notifications button {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 100%;
+  min-height: 64px;
+  padding: 12px 0;
+  border: 0;
+  background: transparent;
+  text-align: left;
+  font: inherit;
+  font-size: 14px;
+  color: #20251f;
+  cursor: pointer;
+}
+
+.social-notifications strong {
+  font-weight: 600;
+}
+
+.social-notification-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #e3efe4;
+  color: #315f36;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.social-notification-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+  line-height: 1.5;
+}
+
+.social-notification-action {
+  color: #596057;
+}
+
+.social-notification-action strong {
+  color: #20251f;
+}
+
+.social-notification-excerpt {
+  color: #687064;
+  font-size: 13px;
+}
+
+.social-notifications button:focus-visible {
+  outline: 2px solid #61795b;
+  outline-offset: 3px;
+}
+
+.social-notifications button:active {
+  background: #eef1e9;
 }
 
 .social-content {

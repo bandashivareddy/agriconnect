@@ -83,7 +83,15 @@ export const posts = [
     text: "Mornings back home ❤️",
     loves: 18,
     comments: [
-      { author: "Raju", text: "Looks just like our side during the rains ❤️" },
+      { id: "suresh-raju", author: "Raju", text: "Looks just like our side during the rains ❤️" },
+      {
+        id: "suresh-road",
+        author: "You",
+        text: "I remember taking this road to visit my grandparents.",
+        replies: [
+          { id: "suresh-road-reply", author: "Suresh", text: "The old neem tree is still there 😊" },
+        ],
+      },
     ],
     image: bullockCartMorning,
     imageAlt: "A bullock cart on a village morning",
@@ -134,7 +142,32 @@ export const posts = [
     crop: "🌶️ Chilli",
     cropKey: "chilli",
     loves: 57,
+    comments: [
+      { id: "lakshmi-raju", author: "Raju", text: "A lovely first harvest. Happy for you!" },
+    ],
     image: chilliHarvest,
     imageAlt: "Chilli harvest",
+  },
+];
+
+// Pre-existing inbox examples for the mock viewer (Lakshmi), not live activity.
+export const notifications = [
+  {
+    id: "harvest-comment",
+    type: "comment",
+    author: "Raju",
+    text: "A lovely first harvest. Happy for you!",
+    postId: 3,
+    commentId: "lakshmi-raju",
+    read: false,
+  },
+  {
+    id: "village-reply",
+    type: "reply",
+    author: "Suresh",
+    text: "The old neem tree is still there 😊",
+    postId: 4,
+    commentId: "suresh-road",
+    read: false,
   },
 ];

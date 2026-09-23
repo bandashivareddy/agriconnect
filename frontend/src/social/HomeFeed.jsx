@@ -2,7 +2,7 @@ import PostCard from "./PostCard";
 import "./HomeFeed.css";
 import { posts } from "./mockSocialData";
 
-function HomeFeed() {
+function HomeFeed({ conversationTarget }) {
   return (
     <div className="social-home">
       <div className="feed-tabs">
@@ -13,7 +13,7 @@ function HomeFeed() {
 
       <div className="feed">
         {posts.map((post) => (
-          <PostCard key={post.id} post={post} />
+          <PostCard key={post.id} post={post} conversationTarget={conversationTarget?.postId === post.id ? conversationTarget : null} />
         ))}
       </div>
     </div>

@@ -2,11 +2,20 @@ import { useState } from "react";
 import HomeFeed from "./HomeFeed";
 import Explore from "./Explore";
 import CreatePost from "./CreatePost";
+import { notifications as mockNotifications } from "./mockSocialData";
 import "./SocialShell.css";
 
 function SocialShell({ user }) {
   const [section, setSection] = useState("home");
   const [creating, setCreating] = useState(false);
+  const [notifications, setNotifications] = useState(mockNotifications);
+  const [conversationTarget, setConversationTarget] = useState(null);
+  const unreadCount = notifications.filter((item) => !item.read).length;
+
+  function openNotifications() {
+    setSection("notifications");
+    setNotifications((items) => items.map((item) => ({ ...item, read: true })));
+  }
 
   return (
     <div className="social-shell">
@@ -16,15 +25,40 @@ function SocialShell({ user }) {
         <button
           className="notification-button"
           type="button"
-          aria-label="Notifications"
+          aria-label={unreadCount ? `Notifications, ${unreadCount} unread` : "Notifications"}
+          onClick={openNotifications}
         >
           🔔
+          {unreadCount > 0 && <span className="social-unread-dot" aria-hidden="true" />}
         </button>
       </header>
 
       <main className="social-content">
-        {section === "home" && <HomeFeed />}
+        <div hidden={section !== "home"}>
+          <HomeFeed conversationTarget={conversationTarget} />
+        </div>
         {section === "explore" && <Explore />}
+        {section === "notifications" && (
+          <section className="social-notifications" aria-labelledby="social-notifications-title">
+            <h1 id="social-notifications-title">Notifications</h1>
+            <ul>
+              {notifications.map((item) => (
+                <li key={item.id}>
+                  <button type="button" onClick={() => {
+                    setConversationTarget({ postId: item.postId, commentId: item.commentId });
+                    setSection("home");
+                  }}>
+                    <span className="social-notification-avatar" aria-hidden="true">{item.author.slice(0, 1)}</span>
+                    <span className="social-notification-copy">
+                      <span className="social-notification-action"><strong>{item.author}</strong> {item.type === "reply" ? "replied to your comment" : "commented on your post"}</span>
+                      <span className="social-notification-excerpt">“{item.text}”</span>
+                    </span>
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
       </main>
 
       <nav className="social-bottom-nav" aria-label="Main navigation">
