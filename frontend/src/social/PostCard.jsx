@@ -24,7 +24,9 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType }) {
 
       <p className="post-text">{post.text}</p>
 
-      <div className="crop-chip">{post.crop}</div>
+      {typeof post.crop === "string" && post.crop.trim() && (
+        <div className="crop-chip">{post.crop}</div>
+      )}
     
       {post.image ? (
         <div className="post-media">

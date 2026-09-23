@@ -1,5 +1,6 @@
 import mangoFlowering from "../assets/social/mango-flowering.jpeg";
 import bhendiLeaf from "../assets/social/bhendi-leaf.jpeg";
+import bullockCartMorning from "../assets/social/bullock-cart-morning.png";
 
 export const farms = [
   {
@@ -72,6 +73,17 @@ export const people = [
 ];
 
 export const posts = [
+  {
+    id: 4,
+    author: "Suresh",
+    context: "Nalgonda, Telangana",
+    time: "1h",
+    text: "Mornings back home ❤️",
+    useful: 18,
+    comments: 3,
+    image: bullockCartMorning,
+    imageAlt: "A bullock cart on a village morning",
+  },
   {
     id: 1,
     author: "Ramesh",

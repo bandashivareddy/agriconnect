@@ -3,7 +3,10 @@ import { farms, posts } from "./mockSocialData";
 import "./CreatePost.css";
 
 const crops = [...new Set([
-  ...posts.map((post) => post.cropKey.charAt(0).toUpperCase() + post.cropKey.slice(1)),
+  ...posts
+    .map((post) => post.cropKey)
+    .filter((cropKey) => typeof cropKey === "string" && cropKey.trim())
+    .map((cropKey) => cropKey.charAt(0).toUpperCase() + cropKey.slice(1)),
   ...farms.flatMap((farm) => farm.crops),
 ])];
 
