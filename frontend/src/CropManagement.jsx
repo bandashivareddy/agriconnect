@@ -223,7 +223,7 @@ function TaskCard({ task, lifecycle, active, run, busy, api, refresh }) {
   </article>;
 }
 
-function CycleDetail({ id, api, run, busy, onFarms, onOpen, token, onViewBooking, onMarketplace, initialTab }) {
+function CycleDetail({ id, api, run, busy, onFarms, onOpen, token, onViewBooking, onMarketplace, initialTab, onShareUpdate }) {
   useTranslation();
   const [tab, setTab] = useState(initialTab || "overview");
   const [bookTask, setBookTask] = useState(null);
@@ -233,6 +233,7 @@ function CycleDetail({ id, api, run, busy, onFarms, onOpen, token, onViewBooking
   useEffect(() => { if (bookTask || confirmWork || bookExpense) document.getElementById("crop-task-service-form")?.scrollIntoView({ behavior: "smooth", block: "start" }); }, [bookTask, confirmWork, bookExpense]);
   const [recordTask, setRecordTask] = useState(null);
   const [savedRecord, setSavedRecord] = useState(null);
+  const [shareableRecord, setShareableRecord] = useState(null);
   const [cycle, setCycle] = useState(null);
   const [error, setError] = useState("");
   const [nextStatus, setNextStatus] = useState("");
@@ -244,6 +245,18 @@ function CycleDetail({ id, api, run, busy, onFarms, onOpen, token, onViewBooking
   const options = cycle.status === "planned" ? ["active", "cancelled"] : cycle.status === "active" ? ["cancelled"] : [];
   const current = ["planned", "active"].includes(cycle.status);
   const context = { farm_id: cycle.farm_id, plot_id: cycle.plot_id, farm_block_id: cycle.farm_block_id, farm_crop_id: id };
+  function shareUpdate() {
+    // Only public identity/display fields cross into the composer handoff.
+    const publicContext = {};
+    if (Number.isSafeInteger(cycle.farm_id) && cycle.farm_id > 0 && typeof cycle.farm_name === "string" && cycle.farm_name.trim()) {
+      publicContext.farm = { canonicalFarmId: cycle.farm_id, name: cycle.farm_name.trim() };
+    }
+    if (Number.isSafeInteger(cycle.crop_id) && cycle.crop_id > 0 && typeof cycle.crop_name === "string" && cycle.crop_name.trim()) {
+      publicContext.crop = { canonicalCropId: cycle.crop_id, name: cycle.crop_name.trim() };
+    }
+    onShareUpdate(publicContext);
+  }
+
   return <><header className="cm-crop-context"><h2>{cycle.crop_name}</h2><p>{[cycle.farm_name, cycle.plot_name, cycle.block_name].filter(Boolean).join(" · ")} · {cropStatusLabel(cycle)}</p>{!current && <p>{t("Crop history. Saved work, costs, inputs and field records remain available.")}</p>}</header>
   <nav className="cm-tabs cm-tabs-harvest" aria-label={t("Crop workspace")}>{[["overview", "Overview"], ["plan", "Crop Plan"], ["activities", "Activities"], ["expenses", "Expenses"], ["harvests", "Harvests"]].map(([key, title]) => <button key={key} aria-pressed={tab === key} onClick={() => setTab(key)}>{title}</button>)}</nav>
   {tab === "overview" && <><section className="cm-card"><div className="cm-row"><h2>{cycle.crop_name}</h2><button disabled={busy} onClick={() => run(refresh)}>{t("Update crop details")}</button></div><CycleSummary cycle={cycle} />
@@ -272,16 +285,16 @@ function CycleDetail({ id, api, run, busy, onFarms, onOpen, token, onViewBooking
     {bookExpense && <ExpenseForm key={bookExpense.booking.booking_id} api={api} context={context} activity={bookExpense.activity} suggestedAmount={bookExpense.booking.total_amount} onCancel={() => setBookExpense(null)} onSaved={(saved) => { setSavedRecord(saved); setBookExpense(null); setServiceRevision((n) => n + 1); setTab("expenses"); }} />}
 
     {!cycle.plan && options.length > 0 && <PlanSetup key={cycle.status} api={api} cycle={cycle} run={run} busy={busy} refresh={refresh} onFarms={onFarms} />}
-    {recordTask && current && <ActivityForm key={recordTask.crop_task_id} api={api} context={context} task={recordTask} onSaved={(saved) => { setSavedRecord(saved); setRecordTask(null); setTab("activities"); }} onCancel={() => setRecordTask(null)} />}
+    {recordTask && current && <ActivityForm key={recordTask.crop_task_id} api={api} context={context} task={recordTask} onSaved={(saved) => { setSavedRecord(saved); setShareableRecord(saved); setRecordTask(null); setTab("activities"); }} onCancel={() => setRecordTask(null)} />}
     {cycle.plan && <section><h2>{planName(cycle.plan.sop_template_name_snapshot)}</h2><details><summary>{t("Plan details")}</summary><p>{t("Edition ")}{cycle.plan.sop_version_number_snapshot}{t(" · Season start: ")}{displayDate(cycle.plan.season_start_snapshot)}{t(" / Planting reference: ")}{displayDate(cycle.plan.anchor_date)}</p></details><h3>{t("Planned tasks")}</h3>{cycle.status === "planned" && <p>{t("Season tasks can be recorded before planting. Some older plan tasks become available after planting.")}</p>}{cycle.plan.tasks.map((task) => <div key={`${task.crop_task_id}-${task.status}`} id={`crop-task-${task.crop_task_id}`}><TaskCard task={task} lifecycle={cycle.lifecycle_type} active={cycle.status === "active" || (cycle.status === "planned" && !!task.phase)} run={run} busy={busy} api={api} refresh={refresh} />{current && <button disabled={!!bookTask || !!confirmWork || !!bookExpense} onClick={() => setRecordTask(task)}>{t("Record Work · ")}{task.title}</button>}<TaskServiceActions api={api} task={task} cycle={cycle} revision={serviceRevision} busy={busy || !!bookTask || !!confirmWork || !!bookExpense} onBook={() => { setRecordTask(null); setBookTask(task); }} onView={onViewBooking} onConfirm={(booking) => { setRecordTask(null); setConfirmWork({ task, booking }); }} onExpense={(booking) => run(async () => { const activity = await api(`/my/farm-activities/${booking.activity_id}`); setBookExpense({ booking, activity }); })} onComplete={() => run(async () => { await api(`/my/crop-tasks/${task.crop_task_id}/status`, "POST", { expected_status: task.status, status: "completed", status_note: "Farmer confirmed recorded service work." }); await refresh(); })} /></div>)}</section>}
     {!cycle.plan && !options.length && <p>{t("No crop plan was generated for this closed crop. Activity and expense history are still available.")}</p>}
   </>}
   {tab === "harvests" && <CropHarvests api={api} cycleId={id} history={!current} />}
-  {["activities", "expenses"].includes(tab) && <FarmLedger key={tab} initialSaved={savedRecord && (tab === "activities" ? savedRecord.description : savedRecord.expense_id) ? savedRecord : null} api={api} context={context} mode={tab} history={!current} onTask={(taskId) => { setTab("plan"); setTimeout(() => document.getElementById(`crop-task-${taskId}`)?.scrollIntoView({ behavior: "smooth" }), 0); }} />}
+  {["activities", "expenses"].includes(tab) && <FarmLedger key={tab} initialSavedAction={tab === "activities" && savedRecord && savedRecord === shareableRecord && onShareUpdate ? <button type="button" onClick={shareUpdate}>{t("Share this update")}</button> : null} initialSaved={savedRecord && (tab === "activities" ? savedRecord.description : savedRecord.expense_id) ? savedRecord : null} api={api} context={context} mode={tab} history={!current} onTask={(taskId) => { setTab("plan"); setTimeout(() => document.getElementById(`crop-task-${taskId}`)?.scrollIntoView({ behavior: "smooth" }), 0); }} />}
   </>;
 }
 
-export default function CropManagement({ token, onBack, onFarms, farmerId, initialCycleId, initialContext, onContextConsumed }) {
+export default function CropManagement({ token, backLabel = "Marketplace", onBack, onFarms, farmerId, initialCycleId, initialContext, onContextConsumed, onShareUpdate }) {
   useTranslation();
   const api = useCropApi(token);
   const [cycles, setCycles] = useState([]);
@@ -322,9 +335,9 @@ export default function CropManagement({ token, onBack, onFarms, farmerId, initi
   }
   if (viewBooking != null) return <MyBookings token={token} farmerId={farmerId} initialBookingId={viewBooking} onBack={() => { setViewBooking(null); setReturnToPlan(true); }} onOpenCrop={(id) => { setSelected(id); setReturnToPlan(true); setViewBooking(null); }} />;
   return <main className="cm-page"><div className="cm-content">
-    <header className="cm-row"><button onClick={() => { if (selected || adding) { setSelected(null); setAdding(false); onContextConsumed?.(); setAttempt((n) => n + 1); } else onBack(); }}>← {selected || adding ? t("My Crops") : t("Marketplace")}</button><h1>{t("My Crops")}</h1></header>
+    <header className="cm-row"><button onClick={() => { if (selected || adding) { setSelected(null); setAdding(false); onContextConsumed?.(); setAttempt((n) => n + 1); } else onBack(); }}>← {selected || adding ? t("My Crops") : t(backLabel)}</button><h1>{t("My Crops")}</h1></header>
     {error && <div className="cm-error" role="alert">{messageText(error)} <button onClick={() => setAttempt((n) => n + 1)}>{t("Refresh list")}</button></div>}
-    {selected ? <CycleDetail key={selected} id={selected} token={token} initialTab={returnToPlan ? "plan" : "overview"} onViewBooking={setViewBooking} onMarketplace={onBack} api={api} run={run} busy={busy} onFarms={onFarms} onOpen={(id) => { setReturnToPlan(false); setSelected(id); }} /> : adding && !catalogueReady ? <p>{t("Loading farms and crops...")}</p> : adding ? <NewCycle initialContext={initialContext} api={api} farms={farms} crops={crops} onFarms={onFarms} run={run} busy={busy} onCreated={(cycle, tracking) => { setReturnToPlan(tracking === "plan"); onContextConsumed?.(); setAdding(false); setView("current"); setSelected(cycle.farm_crop_id); }} /> : <>
+    {selected ? <CycleDetail onShareUpdate={onShareUpdate} key={selected} id={selected} token={token} initialTab={returnToPlan ? "plan" : "overview"} onViewBooking={setViewBooking} onMarketplace={onBack} api={api} run={run} busy={busy} onFarms={onFarms} onOpen={(id) => { setReturnToPlan(false); setSelected(id); }} /> : adding && !catalogueReady ? <p>{t("Loading farms and crops...")}</p> : adding ? <NewCycle initialContext={initialContext} api={api} farms={farms} crops={crops} onFarms={onFarms} run={run} busy={busy} onCreated={(cycle, tracking) => { setReturnToPlan(tracking === "plan"); onContextConsumed?.(); setAdding(false); setView("current"); setSelected(cycle.farm_crop_id); }} /> : <>
       <nav className="cm-tabs cm-tabs-pair" aria-label={t("My Crops views")}>{["current", "history"].map((key) => <button key={key} aria-pressed={view === key} onClick={() => { if (key !== view) { setLoading(true); setView(key); setOffset(0); setCycles([]); } }}>{key === "current" ? t("Current") : t("History")}</button>)}</nav>
       <div className="cm-row"><p>{view === "current" ? t("Your growing and planned crops.") : t("Your previous crops and their records.")}</p><button className="primary-button" onClick={() => setAdding(true)} disabled={loading || !catalogueReady}>{t("+ Start Crop")}</button></div>
       {loading ? <p>{t("Loading crops...")}</p> : !cycles.length ? <section className="cm-card"><h2>{view === "current" ? t("No current crops") : t("No crop history")}</h2><p>{view === "current" ? t("Start a crop on a saved plot. You can track work yourself or choose a crop plan.") : t("Harvested and cancelled crops appear here with their saved records.")}</p></section> : cycles.map((cycle) => <CropListCard key={cycle.farm_crop_id} cycle={cycle} history={view === "history"} onOpen={() => { setReturnToPlan(false); setSelected(cycle.farm_crop_id); }} />)}

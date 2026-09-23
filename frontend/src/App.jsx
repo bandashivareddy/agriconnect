@@ -23,6 +23,7 @@ import ProviderProfile from "./ProviderProfile";
 import ProviderVerification from "./ProviderVerification";
 import { API_BASE_URL } from "./api";
 import SocialShell from "./social/SocialShell";
+import FarmerWorkspace from "./FarmerWorkspace";
 
 const API_URL = API_BASE_URL;
 
@@ -88,7 +89,10 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [cropEntry, setCropEntry] = useState(null);
+  const [fromMyFarm, setFromMyFarm] = useState(false);
+  const [workspaceFarmId, setWorkspaceFarmId] = useState(null);
   const [cropCreateContext, setCropCreateContext] = useState(null);
+  const [pendingSocialContext, setPendingSocialContext] = useState(null);
   const [selectedService, setSelectedService] = useState(null);
   const [page, setPage] = useState(() => {
   const token = localStorage.getItem("access_token");
@@ -98,11 +102,8 @@ function App() {
   }
 
   try {
-    return JSON.parse(
-      localStorage.getItem("current_user")
-    )?.capabilities?.includes("field_officer")
-      ? "field-work"
-      : "home";
+    JSON.parse(localStorage.getItem("current_user"));
+    return "home";
   } catch {
     return "marketplace";
   }
@@ -331,18 +332,9 @@ function App() {
     const userCapabilities = user.capabilities || [];
     const userIsAdmin =
       userCapabilities.includes("admin") || user.user_role === "admin";
-    const userIsProvider =
-      userCapabilities.includes("provider") ||
-      user.user_role === "supplier";
-    const userIsFarmer =
-      userCapabilities.includes("farmer") || user.user_role === "farmer";
 
     if (userIsAdmin) {
       setPage("admin");
-    } else if (userCapabilities.includes("field_officer")) {
-      setPage("field-work");
-    } else if (userIsProvider && !userIsFarmer) {
-      setPage("supplier");
     } else {
       setPage("home");
     }
@@ -355,6 +347,9 @@ function App() {
    */
 
   function handleLogout() {
+    setFromMyFarm(false);
+    setWorkspaceFarmId(null);
+    setPendingSocialContext(null);
     setCropEntry(null);
     localStorage.removeItem("access_token");
     localStorage.removeItem("current_user");
@@ -391,6 +386,7 @@ function App() {
    */
 
   function goToMarketplace() {
+    setFromMyFarm(false);
     setSelectedService(null);
     setPage("marketplace");
   }
@@ -464,6 +460,13 @@ function App() {
 
     setSelectedService(null);
     setPage("bookings");
+  }
+
+  function goToMyFarm() {
+    if (!isFarmer) return;
+    setSelectedService(null);
+    setFromMyFarm(true);
+    setPage("my-farm");
   }
 
   function goToFarmSetup() {
@@ -547,12 +550,25 @@ function App() {
   return (
     <SocialShell
       user={auth.user}
+      operationalWorkspace={isFieldOfficer
+        ? { label: "Field Work", icon: "📋", onOpen: () => { setSelectedService(null); setPage("field-work"); } }
+        : isFarmer
+          ? { label: "My Farm", icon: "🌱", onOpen: goToMyFarm }
+          : isProvider
+            ? { label: "My Services", icon: "🚜", onOpen: goToSupplierDashboard }
+            : undefined}
+      initialComposerContext={pendingSocialContext}
+      onComposerConsumed={() => setPendingSocialContext(null)}
     />
   );
 }
+  if (page === "my-farm") {
+    if (!auth || !isFarmer) return null;
+    return <AuthenticatedPage onSignOut={handleLogout}><FarmerWorkspace token={auth.token} selectedFarmId={workspaceFarmId} onSelectFarm={setWorkspaceFarmId} onBack={() => setPage("home")} onManageFarm={goToFarmSetup} onOpenCrop={(id) => { setCropEntry(id); setCropCreateContext(null); setPage("crop-cycles"); }} /></AuthenticatedPage>;
+  }
   if (page === "crop-cycles") {
     if (!auth || !isFarmer) return null;
-    return <AuthenticatedPage onSignOut={handleLogout}><CropManagement farmerId={auth.user.user_id} initialCycleId={cropEntry} initialContext={cropCreateContext} onContextConsumed={() => setCropCreateContext(null)} token={auth.token} onBack={goToMarketplace} onFarms={goToFarmSetup} /></AuthenticatedPage>;
+    return <AuthenticatedPage onSignOut={handleLogout}><CropManagement onShareUpdate={(context) => { setPendingSocialContext(context); setPage("home"); }} farmerId={auth.user.user_id} initialCycleId={cropEntry} initialContext={cropCreateContext} onContextConsumed={() => setCropCreateContext(null)} token={auth.token} backLabel={fromMyFarm ? "My Farm" : "Marketplace"} onBack={fromMyFarm ? goToMyFarm : goToMarketplace} onFarms={goToFarmSetup} /></AuthenticatedPage>;
   }
 
   if (page === "officer-applications" && auth && isAdmin) {
@@ -613,7 +629,7 @@ function App() {
       <AuthenticatedPage onSignOut={handleLogout}>
         <FarmSetup
           token={auth.token}
-          onBack={goToMarketplace}
+          onBack={fromMyFarm ? goToMyFarm : goToMarketplace}
           onStartCrop={(context) => { setCropEntry(null); setCropCreateContext(context); setPage("crop-cycles"); }}
         />
       </AuthenticatedPage>

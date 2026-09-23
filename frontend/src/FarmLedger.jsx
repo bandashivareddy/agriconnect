@@ -72,7 +72,7 @@ export function ExpenseForm({ api, context, activity, activities = [], suggested
   </form>;
 }
 
-export default function FarmLedger({ api, context, mode = "activities", onTask, history = false, initialSaved = null }) {
+export default function FarmLedger({ api, context, mode = "activities", onTask, history = false, initialSaved = null, initialSavedAction = null }) {
   useTranslation();
   const [manageHistory, setManageHistory] = useState(false);
   const [savedRecord, setSavedRecord] = useState(initialSaved);
@@ -110,7 +110,7 @@ export default function FarmLedger({ api, context, mode = "activities", onTask, 
   return <section><h2>{label(mode)}</h2><p>{mode === "activities" ? t("Actual work history, with or without a Crop Plan.") : t("Recorded expenses in INR. No revenue or profit is calculated.")}</p>
     <details><summary>{t("Filter records")}</summary><div className="cm-form"><label>{t("From")}<input type="date" value={filters.date_from} onChange={(e) => { setFilters({ ...filters, date_from: e.target.value }); setOffset(0); }} /></label><label>{t("To")}<input type="date" value={filters.date_to} onChange={(e) => { setFilters({ ...filters, date_to: e.target.value }); setOffset(0); }} /></label>
       <label>{mode === "activities" ? t("Activity type") : t("Category")}<select value={filters.kind} onChange={(e) => { setFilters({ ...filters, kind: e.target.value }); setOffset(0); }}><option value="">{t("All")}</option>{(mode === "activities" ? activityTypes : categories).map((v) => <option key={v} value={v}>{label(v)}</option>)}</select></label></div></details>
-    {savedRecord && !form && <article id="saved-farm-record" className="cm-card cm-saved" role="status"><h3>{t("Saved ")}{savedRecord.activity_id && savedRecord.description ? t("work") : t("expense")}</h3><p>{displayDate(savedRecord.activity_date || savedRecord.expense_date)}</p><p>{savedRecord.description || `${label(savedRecord.category)}: ${money(savedRecord.amount)}`}</p>{savedRecord.activity_id && savedRecord.description && <InputHistory api={api} activity={savedRecord} canEdit={allowEdits} />}<button onClick={() => setSavedRecord(null)}>{t("Back to records")}</button></article>}
+    {savedRecord && !form && <article id="saved-farm-record" className="cm-card cm-saved" role="status"><h3>{t("Saved ")}{savedRecord.activity_id && savedRecord.description ? t("work") : t("expense")}</h3><p>{displayDate(savedRecord.activity_date || savedRecord.expense_date)}</p><p>{savedRecord.description || `${label(savedRecord.category)}: ${money(savedRecord.amount)}`}</p>{savedRecord.activity_id && savedRecord.description && <InputHistory api={api} activity={savedRecord} canEdit={allowEdits} />}{savedRecord === initialSaved && initialSavedAction}<button onClick={() => setSavedRecord(null)}>{t("Back to records")}</button></article>}
     {error && <p className="cm-error" role="alert">{messageText(error)} <button onClick={() => setRevision((n) => n + 1)}>{t("Retry")}</button></p>}
     {linkedTask && <article className="cm-card"><h3>{t("Crop Task: ")}{linkedTask.title}</h3><p>{label(linkedTask.status)}{t(" · Due ")}{displayDate(linkedTask.due_date)}</p><p className="cm-instructions">{linkedTask.instructions}</p><button onClick={() => setLinkedTask(null)}>{t("Close task detail")}</button></article>}
     {history && <p>{t("Historical records. ")}<button onClick={() => { setManageHistory(!manageHistory); setForm(null); }}>{manageHistory ? t("Return to viewing") : t("Correct / add historical records")}</button></p>}

@@ -8,9 +8,11 @@ import { SocialPeopleContext } from "./SocialPeopleContext";
 import { people, farms, notifications as mockNotifications } from "./mockSocialData";
 import "./SocialShell.css";
 
-function SocialShell({ user }) {
+function SocialShell({ user, initialComposerContext = null, onComposerConsumed, operationalWorkspace }) {
   const [section, setSection] = useState("home");
-  const [creating, setCreating] = useState(false);
+  // App mounts SocialShell when entering Home; capture each handoff once.
+  const [creating, setCreating] = useState(() => initialComposerContext !== null);
+  const [composerContext, setComposerContext] = useState(initialComposerContext);
   const [notifications, setNotifications] = useState(mockNotifications);
   const [conversationTarget, setConversationTarget] = useState(null);
   const [followedPersonIds, setFollowedPersonIds] = useState(["ramesh"]);
@@ -20,9 +22,15 @@ function SocialShell({ user }) {
   const [feedTab, setFeedTab] = useState("for-you");
   const [sessionPosts, setSessionPosts] = useState([]);
 
+  function closeComposer() {
+    setCreating(false);
+    setComposerContext(null);
+    onComposerConsumed?.();
+  }
+
   function addPost(post) {
     setSessionPosts((current) => [post, ...current]);
-    setCreating(false);
+    closeComposer();
     setSelectedPerson(null);
     setSelectedFarm(null);
     setConversationTarget(null);
@@ -146,9 +154,9 @@ function SocialShell({ user }) {
           </svg>
         </button>
 
-        <button className="social-nav-item" type="button">
-          <span>🌱</span>
-          <small>My Farm</small>
+        <button className="social-nav-item" type="button" onClick={operationalWorkspace?.onOpen} disabled={!operationalWorkspace}>
+          <span>{operationalWorkspace?.icon || "🌱"}</span>
+          <small>{operationalWorkspace?.label || "Workspace"}</small>
         </button>
 
         <button className="social-nav-item" type="button">
@@ -156,7 +164,7 @@ function SocialShell({ user }) {
           <small>You</small>
         </button>
       </nav>
-      {creating && <CreatePost user={user} onPost={addPost} onClose={() => setCreating(false)} />}
+      {creating && <CreatePost user={user} initialContext={composerContext} onPost={addPost} onClose={closeComposer} />}
     </div>
     </SocialPeopleContext.Provider>
   );
