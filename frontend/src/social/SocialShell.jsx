@@ -18,6 +18,18 @@ function SocialShell({ user }) {
   const [selectedPerson, setSelectedPerson] = useState(null);
   const [selectedFarm, setSelectedFarm] = useState(null);
   const [feedTab, setFeedTab] = useState("for-you");
+  const [sessionPosts, setSessionPosts] = useState([]);
+
+  function addPost(post) {
+    setSessionPosts((current) => [post, ...current]);
+    setCreating(false);
+    setSelectedPerson(null);
+    setSelectedFarm(null);
+    setConversationTarget(null);
+    setFeedTab("for-you");
+    setSection("home");
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
 
   function toggleFollow(personId) {
     setFollowedPersonIds((ids) => ids.includes(personId)
@@ -71,7 +83,7 @@ function SocialShell({ user }) {
 
       <main className="social-content">
         <div hidden={section !== "home" || Boolean(selectedPerson || selectedFarm)}>
-          <HomeFeed conversationTarget={conversationTarget} feedTab={feedTab} onChangeTab={setFeedTab} />
+          <HomeFeed sessionPosts={sessionPosts} conversationTarget={conversationTarget} feedTab={feedTab} onChangeTab={setFeedTab} />
         </div>
         {section === "explore" && <div hidden={Boolean(selectedPerson || selectedFarm)}><Explore /></div>}
         {selectedPerson && !selectedFarm && (
@@ -144,7 +156,7 @@ function SocialShell({ user }) {
           <small>You</small>
         </button>
       </nav>
-      {creating && <CreatePost user={user} onClose={() => setCreating(false)} />}
+      {creating && <CreatePost user={user} onPost={addPost} onClose={() => setCreating(false)} />}
     </div>
     </SocialPeopleContext.Provider>
   );

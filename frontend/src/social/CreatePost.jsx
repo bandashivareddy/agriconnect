@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { farms, posts } from "./mockSocialData";
-import PostCard from "./PostCard";
 import "./CreatePost.css";
 
 const crops = [...new Set([
@@ -11,7 +10,7 @@ const crops = [...new Set([
   ...farms.flatMap((farm) => farm.crops),
 ])];
 
-function CreatePost({ user, onClose }) {
+function CreatePost({ user, onClose, onPost }) {
   const dialog = useRef(null);
   const [text, setText] = useState("");
   const [crop, setCrop] = useState("");
@@ -19,7 +18,7 @@ function CreatePost({ user, onClose }) {
   const [context, setContext] = useState(null);
   const [question, setQuestion] = useState(false);
   const [mediaNotice, setMediaNotice] = useState(false);
-  const [submitted, setSubmitted] = useState(null);
+  const submitted = useRef(false);
   const authorPerson = {
     id: `user:${user?.user_id ?? "current"}`,
     name: user?.full_name?.trim() || "You",
@@ -33,20 +32,21 @@ function CreatePost({ user, onClose }) {
 
   function submit(event) {
     event.preventDefault();
-    if (!text.trim()) return;
+    if (!text.trim() || submitted.current) return;
     const cropKey = crop.toLowerCase();
     const existingCrop = posts.find((post) => post.cropKey === cropKey);
-    setSubmitted({
+    const post = {
       id: crypto.randomUUID(),
       personId: authorPerson.id,
       author: authorPerson.name,
-      context: "Just now",
-      time: "Preview",
+      time: "Just now",
       text: text.trim(),
       ...(farmId ? { farmId } : {}),
       ...(crop ? { cropKey, crop: existingCrop?.crop || crop } : {}),
       ...(question ? { question: true } : {}),
-    });
+    };
+    submitted.current = true;
+    onPost(post);
   }
 
   return (
@@ -61,17 +61,8 @@ function CreatePost({ user, onClose }) {
           <span aria-hidden="true">×</span>
         </button>
         <h1 id="create-post-heading">Share something</h1>
-        {!submitted && (
           <button className="create-post-submit" type="submit" form="create-post-form" disabled={!text.trim()}>Post</button>
-        )}
       </header>
-      {submitted ? (
-        <div className="create-post-confirmation">
-          <p role="status">Preview complete. Your post hasn’t been published.</p>
-          <PostCard post={submitted} authorPerson={authorPerson} showMediaPlaceholder={false} />
-          <button className="create-post-submit" type="button" onClick={onClose}>Done</button>
-        </div>
-      ) : (
         <form id="create-post-form" onSubmit={submit}>
           <button className="create-post-media" type="button" onClick={() => setMediaNotice(true)}>
             <span aria-hidden="true">📷</span>
@@ -120,10 +111,9 @@ function CreatePost({ user, onClose }) {
           )}
           {question && <p className="create-post-note" role="status">This will be a community question.</p>}
           <footer className="create-post-footer">
-            <span>Preview only for now</span>
+            <span>Visible for this session only</span>
           </footer>
         </form>
-      )}
     </dialog>
   );
 }

@@ -4,12 +4,13 @@ import PostCard from "./PostCard";
 import "./HomeFeed.css";
 import { posts } from "./mockSocialData";
 
-function HomeFeed({ conversationTarget, feedTab = "for-you", onChangeTab }) {
+function HomeFeed({ conversationTarget, feedTab = "for-you", onChangeTab, sessionPosts = [] }) {
   const socialPeople = useContext(SocialPeopleContext);
+  const homePosts = [...sessionPosts, ...posts];
   const visiblePosts = feedTab === "following"
-    ? posts.filter((post) => socialPeople?.followedPersonIds.includes(post.personId)
+    ? homePosts.filter((post) => socialPeople?.followedPersonIds.includes(post.personId)
       || socialPeople?.followedFarmIds.includes(post.farmId))
-    : posts;
+    : homePosts;
   return (
     <div className="social-home">
       <div className="feed-tabs">
@@ -20,9 +21,10 @@ function HomeFeed({ conversationTarget, feedTab = "for-you", onChangeTab }) {
 
       <div className="feed">
         {visiblePosts.length === 0 && <p className="following-empty" role="status">Posts from people and farms you follow will appear here.</p>}
-        {visiblePosts.map((post) => (
-          <PostCard key={post.id} post={post} conversationTarget={conversationTarget?.postId === post.id ? conversationTarget : null} />
-        ))}
+        {visiblePosts.map((post) => {
+          const isSessionPost = sessionPosts.includes(post);
+          return <PostCard key={post.id} post={post} authorPerson={isSessionPost ? { id: post.personId, name: post.author } : undefined} showMediaPlaceholder={!isSessionPost} conversationTarget={conversationTarget?.postId === post.id ? conversationTarget : null} />;
+        })}
       </div>
     </div>
   );

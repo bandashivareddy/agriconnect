@@ -94,7 +94,7 @@ function PostCard({ post, showMediaPlaceholder = true, moreButtonType, conversat
               </>
             )}
           </div>
-          <span>{post.context} · {post.time}</span>
+          <span>{post.context ? `${post.context} · ` : ""}{post.time}</span>
         </div>
 
         <button className="post-more" type={moreButtonType} aria-label="More options">
