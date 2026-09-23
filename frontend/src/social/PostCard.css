@@ -92,20 +92,142 @@
 }
 
 .post-actions {
-  height: 48px;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  min-height: 44px;
+  display: flex;
+  gap: 16px;
   align-items: center;
 }
 
 .post-actions button {
-  height: 100%;
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 4px;
   border: 0;
   background: transparent;
   color: #596057;
   font-size: 13px;
   font-weight: 600;
   cursor: pointer;
+}
+
+.post-actions svg,
+.post-comment-form svg {
+  width: 23px;
+  height: 23px;
+  flex: none;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.9;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.post-actions button[aria-pressed="true"] .post-heart-icon {
+  fill: #d94b45;
+  stroke: #d94b45;
+}
+
+.post-heart-icon {
+  transition: transform 180ms ease;
+}
+
+.post-actions button:active .post-heart-icon {
+  transform: scale(0.92);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .post-heart-icon {
+    transition: none;
+  }
+
+  .post-actions button:active .post-heart-icon {
+    transform: none;
+  }
+}
+
+.post-action-count {
+  font-size: 12px;
+  font-weight: 400;
+}
+
+.post-comments {
+  padding: 4px 0 12px;
+}
+
+.post-comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.post-comment-list li {
+  margin-bottom: 12px;
+  overflow-wrap: anywhere;
+}
+
+.post-comment-list strong {
+  font-weight: 600;
+}
+
+.post-comment-list p {
+  margin: 2px 0 0;
+  color: #596057;
+  white-space: pre-wrap;
+}
+
+.post-comment-form {
+  display: flex;
+  align-items: center;
+  border: 1px solid #dce2d9;
+  border-radius: 24px;
+  background: #fafbf9;
+}
+
+.post-comment-form input {
+  flex: 1;
+  min-width: 0;
+  min-height: 44px;
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 24px;
+  padding: 8px 12px;
+  background: transparent;
+  color: #354333;
+  font: inherit;
+  font-size: 16px;
+}
+
+.post-comment-form button {
+  display: grid;
+  place-items: center;
+  flex: 0 0 44px;
+  min-height: 44px;
+  padding: 8px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: #315f36;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.post-comment-form button:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.post-actions button:focus-visible,
+.post-comment-form input:focus-visible,
+.post-comment-form button:focus-visible {
+  outline: 2px solid #61795b;
+  outline-offset: 2px;
 }
 
 @media (min-width: 621px) {
