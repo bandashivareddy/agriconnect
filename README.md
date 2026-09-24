@@ -14,7 +14,7 @@ The implementation evolved incrementally, reusing existing identities, records a
 | --- | --- |
 | Agricultural services marketplace | Farmer/provider onboarding, services, availability and bookings form the foundation in [the main API](backend/main.py) and [booking regression tests](backend/tests/test_booking_regression.py). |
 | Crop and farm operations | [Slice 1](CROP_MANAGEMENT_SLICE1.md) reuses `farm_crops` for crop cycles and adds versioned standard operating procedures (SOPs), generated plans and task execution. |
-| Field verification | [Slice 2A](CROP_MANAGEMENT_SLICE2A.md) adds officer assignments, visits, factual observations and task verification. |
+| Field verification | [Slice 2A](CROP_MANAGEMENT_SLICE2A.md) documents backend/domain support for officer assignments, visits, factual observations and task verification; this does not establish a completed browser workspace. |
 | Activities, expenses and inputs | [Slice 2B](CROP_MANAGEMENT_SLICE2B.md) adds farm/crop work and expense records; [Slice 2C](CROP_MANAGEMENT_SLICE2C.md) adds planting and input snapshots. [Slice 2D](CROP_MANAGEMENT_SLICE2D.md) refines Current/History and farm/plot/block navigation. |
 | Harvest, revenue and lifecycle | [Slice 3](CROP_MANAGEMENT_SLICE3.md) records harvests and sales and derives revenue, costs and net return. [Slice 4](CROP_MANAGEMENT_SLICE4.md) adds reconciliation, completion and separate seasons for continuing perennial plantings. |
 | Service integration and season planning | [Slice 5](CROP_MANAGEMENT_SLICE5.md) connects crop tasks to existing marketplace bookings, then farmer-confirmed work and actual expenses. [Slice 6](CROP_MANAGEMENT_SLICE6.md) extends scheduling and season planning. |
@@ -25,11 +25,43 @@ The implementation evolved incrementally, reusing existing identities, records a
 
 ## Current capabilities
 
-**Operational application:** backend-backed workflows cover onboarding, farms and plots, marketplace services and bookings, crop plans and tasks, field visits and verification, activities and expenses, inputs, harvests and sales, production completion, perennial seasons and officer applications. Farmers, providers, officers and admins have distinct workspace capabilities. The slice documents provide APIs, validation results and manual walkthroughs.
+**Operational application:** backend-backed workflows cover onboarding, farms and plots, marketplace services and bookings, crop plans and tasks, field visits and verification, activities and expenses, inputs, harvests and sales, production completion, perennial seasons and officer applications. Role and capability checks distinguish farmer, provider, officer and admin access. Field Officer assignments, visits, observations and verification are backend-supported and documented; frontend components and routing exist, but a completed, end-to-end browser-validated officer workspace is not claimed here. The slice documents provide APIs, validation results and manual walkthroughs.
 
 **Social prototype:** Home and Explore support sample farming and village-life content, crop discovery, farm and person profiles, a lightweight composer, session-created posts, reactions, comments/replies, sample notifications, sharing and a Following feed. [SocialShell](frontend/src/social/SocialShell.jsx) uses [sample data](frontend/src/social/mockSocialData.js) and in-memory React state; posts, follows and interactions are not a durable multi-user backend. [PostCard](frontend/src/social/PostCard.jsx) shares text through native sharing or clipboard copying; this does not establish a publicly hosted post service.
 
 **Separate person and farm identities:** people and farms have distinct profiles and follow lists. Post attribution and optional farm/crop context let a person share a moment associated with a farm without treating the farm as the person. The [public context normalizer](frontend/src/social/publicPostContext.js) copies selected identity/display fields, distinguishes canonical operational references from sample social identities, and uses the crop catalogue ID rather than a private cultivation record ID.
+
+## Product Walkthrough
+
+### 1. Social Home
+
+![Social Home with a farming question and author context](docs/screenshots/social-home-question.png)
+
+Useful farming content and questions anchor the social experience, with person attribution and crop/farm context where available. This is the sample-data social prototype described above, with session-only interactions rather than a production-complete social backend.
+
+### 2. Farm Identity
+
+![Farm profile and social identity](docs/screenshots/farm-profile.png)
+
+The product models a farm as a persistent social identity with its own profile and followers, separate from a person or login actor. People and farms remain distinct identities; durable social persistence is still outside the current prototype.
+
+### 3. My Farm / Operational Bridge
+
+![My Farm workspace connecting farms and crops](docs/screenshots/my-farm.png)
+
+The farmer workspace connects the social-facing experience to operational farm data and active/planned crops. Users can enter existing crop operations from this workspace, reusing the operational system without duplicating it.
+
+### 4. Crop Operations
+
+![Crop lifecycle workspace and operational tabs](docs/screenshots/crop-overview.png)
+
+The crop lifecycle workspace brings together Overview, Crop Plan, Activities, Expenses and Harvests. Social capabilities were added while preserving this existing operational foundation.
+
+### 5. Harvest & Revenue
+
+![Harvest and revenue view within crop operations](docs/screenshots/harvest-revenue.png)
+
+The crop workflow extends through harvest, sales/revenue, expenses and net-return/reconciliation concepts. Empty or demo values illustrate the workflow; they are not evidence of real commercial transactions or production data.
 
 ## Architecture and technology
 
@@ -219,10 +251,12 @@ Farmer entry: **My Crops**. Admin entry: **Manage Crop SOPs**.
 
 ## Crop Management Slice 2A
 
-Assignment-scoped officer visits, task verification, and factual observations are
-documented in [CROP_MANAGEMENT_SLICE2A.md](CROP_MANAGEMENT_SLICE2A.md).
-Officer entry: **My Field Work**. Admin entry: **Manage Field Work**.
-Farmers can read field-work updates from Crop Cycle detail.
+Backend/domain support for assignment-scoped officer visits, task verification and
+factual observations is documented in [CROP_MANAGEMENT_SLICE2A.md](CROP_MANAGEMENT_SLICE2A.md).
+Frontend components and routes exist for **My Field Work**, **Manage Field Work**
+and farmer field-work updates. These entry points and the documented walkthroughs
+should not be read as evidence of a completed, end-to-end browser-validated Field
+Officer workspace.
 
 ## Crop/Farm Management Slice 2B
 
