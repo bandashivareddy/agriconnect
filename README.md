@@ -1,5 +1,67 @@
 # AgriConnect
 
+AgriConnect is an agricultural services marketplace extended into a farm operations application and a farm-centric social experience. It connects service booking with crop planning, field verification, recorded work, expenses, harvests and sales, while keeping operational workflows available alongside social discovery.
+
+This case study demonstrates engineering relevant to Forward Deployed Engineer and AI Solution Engineer work: translating domain workflows into software, integrating existing systems, modelling permissions and data boundaries, and delivering tested increments. It does not claim an implemented AI system, production deployment or commercial adoption.
+
+## The problem and product evolution
+
+Booking an agricultural service is only one part of running a farm. The surrounding workflow needs to answer: what should happen on a crop, what was observed in the field, what work actually happened, what it cost, and what was harvested and sold. AgriConnect brings these records together around farms and crop production periods. The social experience adds discovery of people, farms and crops and sharing of farming and village-life moments.
+
+The implementation evolved incrementally, reusing existing identities, records and workflows:
+
+| Stage | Capability and repository evidence |
+| --- | --- |
+| Agricultural services marketplace | Farmer/provider onboarding, services, availability and bookings form the foundation in [the main API](backend/main.py) and [booking regression tests](backend/tests/test_booking_regression.py). |
+| Crop and farm operations | [Slice 1](CROP_MANAGEMENT_SLICE1.md) reuses `farm_crops` for crop cycles and adds versioned standard operating procedures (SOPs), generated plans and task execution. |
+| Field verification | [Slice 2A](CROP_MANAGEMENT_SLICE2A.md) adds officer assignments, visits, factual observations and task verification. |
+| Activities, expenses and inputs | [Slice 2B](CROP_MANAGEMENT_SLICE2B.md) adds farm/crop work and expense records; [Slice 2C](CROP_MANAGEMENT_SLICE2C.md) adds planting and input snapshots. [Slice 2D](CROP_MANAGEMENT_SLICE2D.md) refines Current/History and farm/plot/block navigation. |
+| Harvest, revenue and lifecycle | [Slice 3](CROP_MANAGEMENT_SLICE3.md) records harvests and sales and derives revenue, costs and net return. [Slice 4](CROP_MANAGEMENT_SLICE4.md) adds reconciliation, completion and separate seasons for continuing perennial plantings. |
+| Service integration and season planning | [Slice 5](CROP_MANAGEMENT_SLICE5.md) connects crop tasks to existing marketplace bookings, then farmer-confirmed work and actual expenses. [Slice 6](CROP_MANAGEMENT_SLICE6.md) extends scheduling and season planning. |
+| Shared access | [Slice 7](CROP_MANAGEMENT_SLICE7.md) extends shared signup with reviewed Field Officer applications and capability-based access. |
+| Farm-centric social experience | [Social components](frontend/src/social) add Home, Explore, crop/farm/people discovery, profiles, posting, interactions and separate person/farm following. [App](frontend/src/App.jsx) connects social and operational navigation. |
+
+**Evidence boundary:** pre-social evolution is evidenced by code, [explicit migrations](backend/alembic/versions), and the `CROP_MANAGEMENT_SLICE1` through `CROP_MANAGEMENT_SLICE7` documents above, including Slice 2A–2D. Git does not independently record that entire earlier journey. Git starts at `d7a671e` — **Baseline AgriConnect before social UI evolution** — and records 18 subsequent social evolution commits through `f3cc498` — **Complete operational and social navigation checkpoint**. Those commits cover Home, Explore, reusable components, profiles, composing, interactions, replies, sharing, following, attribution, farm/crop context and integrated navigation.
+
+## Current capabilities
+
+**Operational application:** backend-backed workflows cover onboarding, farms and plots, marketplace services and bookings, crop plans and tasks, field visits and verification, activities and expenses, inputs, harvests and sales, production completion, perennial seasons and officer applications. Farmers, providers, officers and admins have distinct workspace capabilities. The slice documents provide APIs, validation results and manual walkthroughs.
+
+**Social prototype:** Home and Explore support sample farming and village-life content, crop discovery, farm and person profiles, a lightweight composer, session-created posts, reactions, comments/replies, sample notifications, sharing and a Following feed. [SocialShell](frontend/src/social/SocialShell.jsx) uses [sample data](frontend/src/social/mockSocialData.js) and in-memory React state; posts, follows and interactions are not a durable multi-user backend. [PostCard](frontend/src/social/PostCard.jsx) shares text through native sharing or clipboard copying; this does not establish a publicly hosted post service.
+
+**Separate person and farm identities:** people and farms have distinct profiles and follow lists. Post attribution and optional farm/crop context let a person share a moment associated with a farm without treating the farm as the person. The [public context normalizer](frontend/src/social/publicPostContext.js) copies selected identity/display fields, distinguishes canonical operational references from sample social identities, and uses the crop catalogue ID rather than a private cultivation record ID.
+
+## Architecture and technology
+
+| Layer | Implementation |
+| --- | --- |
+| Frontend | React 19, Vite 8, JavaScript/JSX and CSS; i18next/react-i18next with English and Telugu locale files. See [dependencies](frontend/package.json) and [source](frontend/src). |
+| API and authentication | Python, FastAPI and Uvicorn; JWT authentication with PyJWT and password hashing with pwdlib. [main.py](backend/main.py) integrates domain modules for crops, field work, farm records, harvests, lifecycle and task services. |
+| Persistence | PostgreSQL via SQLAlchemy Core, handwritten SQL and psycopg; explicit Alembic revisions. See [dependencies](backend/requirements.txt) and [migrations](backend/alembic/versions). |
+| Local request flow | Browser → `/api` → [Vite development proxy](frontend/vite.config.js) → FastAPI → PostgreSQL. Social sample data and session interactions currently live in the frontend. |
+| Verification and operations | [pytest/API and concurrency tests](backend/tests), [guarded migration helper](backend/scripts/migrate_local.py), [health check](backend/health_check.py) and [PostgreSQL backup script](backend/scripts/backup_database.ps1). |
+
+## Key engineering decisions
+
+- **Extend the existing model.** Crop cycles reuse `farm_crops`; perennial seasons use crop records for execution, connected by a planting identity. Existing links to work, costs and harvests are retained instead of rewriting the execution model. See [Slice 1](CROP_MANAGEMENT_SLICE1.md) and [Slice 4](CROP_MANAGEMENT_SLICE4.md).
+- **Preserve issued plans.** Versioned SOPs and immutable task snapshots prevent future template edits from rewriting existing crop plans. Explicit date anchors and classified scheduling do not imply automatic agronomic event detection. See [Slice 6](CROP_MANAGEMENT_SLICE6.md).
+- **Separate verification, execution and money.** Officer verification does not complete farmer tasks. Booking does not automatically establish completed work or expenditure; farmer confirmation records those facts, and the existing expense ledger remains the cost source. See [Slice 2A](CROP_MANAGEMENT_SLICE2A.md), [Slice 3](CROP_MANAGEMENT_SLICE3.md) and [Slice 5](CROP_MANAGEMENT_SLICE5.md).
+- **Reuse integration paths.** Task-linked service requests use the existing booking endpoint and transaction, retaining availability and capacity checks. Optional origins and snapshots preserve context without a second booking system. See [Slice 5](CROP_MANAGEMENT_SLICE5.md).
+- **Handle retries and conflicts explicitly.** Request keys, expected-state checks, row locks and database constraints protect relevant mutations from duplicates and stale writes. [Concurrency tests](backend/tests/test_task_service_concurrency.py) exercise competing database operations.
+- **Enforce access on the server.** Shared authentication and capabilities retain farmer/provider access while officer actions require the relevant assignment. Signup intent alone grants no officer authority. See [Slice 7](CROP_MANAGEMENT_SLICE7.md) and [field-work implementation](backend/field_work.py).
+
+## Evidence, reliability and limits
+
+**378 passing backend tests** are recorded in [Slice 7 validation](CROP_MANAGEMENT_SLICE7.md): 348 baseline tests plus 30 additional tests. This is a documented validation checkpoint, not a claim that every checkout or environment has just been tested. The [suite](backend/tests) covers security, onboarding, bookings, crop management, field work, farm records, inputs, harvests, production lifecycle, season planning, officer applications, database operations and concurrency scenarios.
+
+The [test database guard](backend/tests/conftest.py) requires a distinct test-named database and checks the connected database identity. Explicit migrations, historical-data checks documented in the slice reports, and the backup/restore instructions below support controlled changes. Slice 7 records successful frontend build/lint checks with existing warnings; the slice reports distinguish automated validation from manual browser checks.
+
+These are implementation and local validation results. They do not establish production scale, deployment availability, commercial usage or end-to-end social persistence. Crop planning uses configured SOPs and explicit scheduling; no AI diagnosis, recommendation engine or automated agronomic decision-making is claimed. Provider-document malware scanning remains deferred, as noted below.
+
+## Technical setup and implementation documentation
+
+The existing local setup, test, migration, backup/restore and slice reference instructions follow.
+
 ## Working baseline
 
 - Python 3.14.7
